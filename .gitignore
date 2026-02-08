@@ -1,0 +1,48 @@
+nano .gitignore
+```
+
+Cole:
+```
+# LASC OS - Git Ignore
+
+# Arquivos temporários
+*.tmp
+*.log
+*.cache
+*~
+
+# Backups locais (já temos na pasta backups/)
+lasc-backups/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+
+# pmbootstrap
+.local/
+chroot_*/
+
+# Imagens de disco (muito grandes)
+*.img
+*.qcow2
+
+# Dados sensíveis
+*.key
+*.pem
+*.cert
+secrets/
