@@ -213,9 +213,9 @@ Ver [LICENSE](LICENSE) para detalhes.
 ## 🔗 Links Úteis
 
 - [Site Oficial](https://lasc-os.com) _(em breve)_
-- [Wiki](https://github.com/[usuario]/lasc-os/wiki)
-- [Issues](https://github.com/[usuario]/lasc-os/issues)
-- [Discussões](https://github.com/[usuario]/lasc-os/discussions)
+- [Wiki](https://github.com/lalberto1985/lasc-os/wiki)
+- [Issues](https://github.com/lalberto1985/lasc-os/issues)
+- [Discussões](https://github.com/lalberto1985/lasc-os/discussions)
 
 ---
 
