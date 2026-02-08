@@ -1,9 +1,17 @@
-# LASC OS v1.0
+# LASC OS v1.1
 ### Sistema Operacional Mobile Linux
 
-![LASC OS Logo](https://img.shields.io/badge/LASC%20OS-v1.0-brightgreen)
-![License](https://img.shields.io/badge/license-GPL%20v3-blue)
+# LASC OS v1.1
+### Sistema Operacional Mobile Linux
+
+![Version](https://img.shields.io/badge/version-1.1-brightgreen)
+![License](https://img.shields.io/badge/license-MIT%20%2B%20GPL%20v3-blue)
 ![Platform](https://img.shields.io/badge/platform-Linux%20Mobile-orange)
+![Commands](https://img.shields.io/badge/commands-15%20exclusive-yellow)
+![Apps](https://img.shields.io/badge/apps-18%20installed-purple)
+![Status](https://img.shields.io/badge/status-Beta%20Public-green)
+![Language](https://img.shields.io/badge/language-Shell-lightgrey)
+![Made in Brazil](https://img.shields.io/badge/made%20in-Brazil%20🇧🇷-green)
 
 **Sistema operacional mobile completo baseado em postmarketOS, desenvolvido do zero com foco em privacidade, customização e controle total.**
 
