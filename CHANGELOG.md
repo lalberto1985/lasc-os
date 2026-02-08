@@ -7,7 +7,25 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
-## [1.1] - 2026-02-08
+## [1.1.1] - 2026-02-08
+
+### ✨ Adicionado
+- **lasc-help** - Central de ajuda completa
+  - Lista todos os 17 comandos
+  - Descrição de cada um
+  - Dicas e atalhos
+  
+- **lasc-version** - Informações de versão
+  - Versão atual e codinome
+  - Novidades da versão
+  - Links úteis
+
+### 🔄 Mudado
+- Welcome message aprimorada (/etc/motd)
+- lasc-doctor agora valida 17 comandos
+- Total de comandos: 15 → 17
+
+---
 
 ### 🎉 Recuperação e Expansão
 
