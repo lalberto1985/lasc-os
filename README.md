@@ -121,6 +121,9 @@ Dispositivos suportados:
 - `lasc-clean` - Limpeza do sistema
 - `lasc-backup` - Backup automático
 - `about` - Sobre o sistema
+- **`lasc-network` / `network`** - Gerenciador de rede ✨ **NOVO v1.1**
+- **`lasc-process` / `processos`** - Monitor de processos ✨ **NOVO v1.1**
+- **`lasc-log` / `logs`** - Visualizador de logs ✨ **NOVO v1.1**
 
 ### Gerenciamento
 - `lasc-apps` - Instalador interativo (18 apps)
