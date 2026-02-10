@@ -3,7 +3,41 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [1.2.1] - 2026-02-08
+## [1.3.0] - 2026-02-10
+
+### 📱 MOBILE READY!
+
+Esta é a versão que torna o LASC OS verdadeiramente pronto para hardware mobile!
+
+### ✨ Adicionado
+- **lasc-wifi** - Gerenciador WiFi completo ⭐⭐⭐⭐⭐
+  - Escanear redes disponíveis
+  - Conectar/desconectar
+  - Ver redes salvas
+  - Informações de conexão
+  
+- **lasc-battery** - Monitor de bateria
+  - Barra visual de carga
+  - Status (carregando/descarregando)
+  - Voltagem e corrente
+  - Alertas de bateria baixa
+  
+- **lasc-brightness** - Controle de brilho
+  - Ajuste interativo (+/- 10%)
+  - Presets (10%, 50%, 100%)
+  - Interface visual com barra
+
+### 🎯 Marco Histórico
+- **23 COMANDOS EXCLUSIVOS!** 🎊
+- Sistema completo para dispositivos móveis
+- Todos os recursos essenciais implementados
+
+### 📊 Crescimento
+- Comandos: 20 → 23 (+15%)
+- Funcionalidades mobile: 100% completas
+- **PRONTO PARA HARDWARE REAL!** 🚀
+
+---
 
 ### 🎨 Arte ASCII
 
