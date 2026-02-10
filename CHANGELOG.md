@@ -3,26 +3,26 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [1.2.0] - 2026-02-08
+## [1.2.1] - 2026-02-08
 
-### 🎨 Visual Impressionante
-Esta versão adiciona sistema de temas e personalização visual completa!
+### 🎨 Arte ASCII
 
 ### ✨ Adicionado
-- **lasc-theme** - Sistema de temas de cores
-  - 4 temas: Default, Hacker (Matrix), Candy (vibrante), Ocean (azul)
-  - Salva preferência do usuário
-  - Muda prompt colorido dinamicamente
-  
-- **lasc-quote** - Frases motivacionais aleatórias
-  - 20 frases inspiradoras em português
-  - Easter egg divertido
-  - Ótimo para começar o dia!
+- **lasc-ascii** - Gerador de arte ASCII
+  - 5 palavras disponíveis: LASC, LINUX, HELLO, LOVE, COOL
+  - Arte em ASCII grande e bonita
+  - Easter egg divertido!
+
+### 📸 Documentação
+- Screenshots profissionais adicionados ao README
+- 6 imagens mostrando principais funcionalidades
+- Projeto muito mais visual
 
 ### 🔄 Mudado
-- lasc-doctor agora valida 18 comandos (antes 17)
-- Total de comandos: 17 → 18
-- Sistema mais personalizável
+- lasc-doctor agora valida 20 comandos
+- Total: 18 → 20 comandos exclusivos!
+
+---
 
 ### 📊 Estatísticas
 - **18 comandos exclusivos** (12 → 15 → 17 → 18)
