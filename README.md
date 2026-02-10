@@ -17,15 +17,31 @@
 
 ---
 
-## 🚀 Features
+## 📱 Screenshots
 
-- ✅ **12 comandos exclusivos** desenvolvidos do zero
-- ✅ **Interface Android-style** via terminal
-- ✅ **18+ apps disponíveis** via instalador integrado
-- ✅ **Sistema de backup** automatizado
-- ✅ **Diagnóstico completo** do sistema
-- ✅ **Launcher mobile** com categorias organizadas
-- ✅ **Documentação completa** em português
+### Dashboard Automático
+![LASC Dashboard](screenshots/01-dashboard.png)
+*Dashboard exibido automaticamente no login com informações do sistema*
+
+### Informações Estilizadas
+![LASC Fetch](screenshots/02-fetch.png)
+*Comando `fetch` mostra info do sistema com logo ASCII*
+
+### Menu Principal Android-Style
+![LASC Android](screenshots/03-android.png)
+*Launcher mobile com 18 apps organizados por categoria*
+
+### Hub de Ferramentas
+![LASC Store](screenshots/04-store.png)
+*Store com 12 ferramentas essenciais*
+
+### Central de Ajuda
+![LASC Help](screenshots/05-help.png)
+*Sistema de ajuda completo listando todos os comandos*
+
+### Informações de Versão
+![LASC Version](screenshots/06-version.png)
+*Detalhes da versão atual e novidades*
 
 ## 📱 Screenshots
 ```
