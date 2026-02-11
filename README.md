@@ -1,19 +1,59 @@
-# LASC OS v1.1
-### Sistema Operacional Mobile Linux
+# LASC OS - Sistema Operacional Mobile Linux
 
-# LASC OS v1.1
-### Sistema Operacional Mobile Linux
-
-![Version](https://img.shields.io/badge/version-1.1-brightgreen)
+![Version](https://img.shields.io/badge/version-1.4.0-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT%20%2B%20GPL%20v3-blue)
 ![Platform](https://img.shields.io/badge/platform-Linux%20Mobile-orange)
-![Commands](https://img.shields.io/badge/commands-15%20exclusive-yellow)
+![Commands](https://img.shields.io/badge/commands-23%20exclusive-yellow)
 ![Apps](https://img.shields.io/badge/apps-18%20installed-purple)
-![Status](https://img.shields.io/badge/status-Beta%20Public-green)
+![Status](https://img.shields.io/badge/status-Mobile%20Ready-green)
 ![Language](https://img.shields.io/badge/language-Shell-lightgrey)
 ![Made in Brazil](https://img.shields.io/badge/made%20in-Brazil%20🇧🇷-green)
 
-**Sistema operacional mobile completo baseado em postmarketOS, desenvolvido do zero com foco em privacidade, customização e controle total.**
+Sistema Operacional Mobile Linux completo, baseado em postmarketOS, com interface Android-style e 23 comandos exclusivos.
+
+**Privacidade • Liberdade • Controle**
+
+---
+
+## 🎯 Sobre o LASC OS
+
+LASC OS é um sistema operacional mobile Linux desenvolvido do zero, focado em:
+- **Privacidade**: Sem rastreamento, sem telemetria
+- **Liberdade**: 100% open source, você controla tudo
+- **Personalização**: 8 temas visuais, comandos customizáveis
+
+Baseado em postmarketOS (Alpine Linux), oferece uma experiência mobile completa via terminal e interface gráfica Phosh.
+
+---
+
+## ✨ Features
+
+### 🚀 Sistema Completo
+- **23 comandos exclusivos** desenvolvidos do zero
+- **18 aplicativos** instalados (Firefox, Telegram, Git, Python, etc)
+- **Dashboard automático** no login
+- **Launcher Android-style** com 21 opções
+- **Store Hub** com 15 ferramentas
+
+### 📱 Mobile Ready
+- ✅ **WiFi Manager** - Gerenciador completo de redes
+- ✅ **Battery Monitor** - Monitor de bateria com alertas
+- ✅ **Brightness Control** - Controle de brilho interativo
+- ✅ **Network Status** - Status de rede em tempo real
+- ✅ **Process Manager** - Gerenciador de processos
+
+### 🎨 Personalização
+- 🎨 **8 Temas Visuais** - Default, Hacker, Candy, Ocean, Fire, Ice, Sunset, Forest
+- 💬 **30 Frases Motivacionais** - Inspiração diária aleatória
+- 🎨 **10 ASCII Arts** - Arte tipográfica (LASC, LINUX, CODE, POWER, etc)
+- ⚙️ **Sistema de aliases** - 22+ atalhos configuráveis
+
+### 📚 Documentação
+- README completo com screenshots
+- CHANGELOG detalhado (6 versões)
+- INSTALLATION.md (4 métodos)
+- Troubleshooting completo
+- CONTRIBUTING guidelines
 
 ---
 
@@ -29,11 +69,11 @@
 
 ### Menu Principal Android-Style
 ![LASC Android](screenshots/03-android.png)
-*Launcher mobile com 18 apps organizados por categoria*
+*Launcher mobile com 21 apps organizados por categoria*
 
 ### Hub de Ferramentas
 ![LASC Store](screenshots/04-store.png)
-*Store com 12 ferramentas essenciais*
+*Store com 15 ferramentas essenciais*
 
 ### Central de Ajuda
 ![LASC Help](screenshots/05-help.png)
@@ -43,209 +83,86 @@
 ![LASC Version](screenshots/06-version.png)
 *Detalhes da versão atual e novidades*
 
-## 📱 Screenshots
-```
-     ██╗      █████╗ ███████╗ ██████╗ 
-     ██║     ██╔══██╗██╔════╝██╔════╝ 
-     ██║     ███████║███████╗██║      
-     ██║     ██╔══██║╚════██║██║      
-     ███████╗██║  ██║███████║╚██████╗ 
-     ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ 
-```
+---
 
-## 🎯 Visão do Projeto
+## 🔧 Comandos Exclusivos (23)
 
-O LASC OS é uma alternativa open source aos sistemas proprietários (Android, iOS), oferecendo:
+### Core (v1.0)
+| Comando | Função |
+|---------|--------|
+| `lasc-dashboard` | Dashboard automático com status do sistema |
+| `lasc-fetch` | Informações estilizadas com logo |
+| `lasc-info` | Informações detalhadas do sistema |
+| `lasc-apps` | Instalador de 18 aplicativos |
+| `lasc-update` | Atualizador de sistema |
+| `lasc-store` | Hub com 15 ferramentas |
+| `lasc-android` | Launcher mobile (21 opções) |
+| `lasc-list` | Lista apps instalados |
+| `lasc-clean` | Limpeza de sistema |
+| `lasc-doctor` | Diagnóstico completo (23 comandos) |
+| `lasc-about` | Sobre o sistema |
+| `lasc-backup` | Sistema de backup |
 
-- 🔒 **Privacidade total** - Sem Google, sem tracking
-- 🔓 **Open Source 100%** - Código aberto completo
-- ⚙️ **Customização infinita** - Controle total do sistema
-- 💻 **Terminal poderoso** - Acesso root completo
-- 📱 **Interface mobile** - Phosh UI otimizada
+### Sistema (v1.1)
+| Comando | Função |
+|---------|--------|
+| `lasc-network` | Status de rede completo |
+| `lasc-process` | Monitor de processos |
+| `lasc-log` | Visualizador de logs |
 
-## 📦 Instalação
+### Usabilidade (v1.1.1)
+| Comando | Função |
+|---------|--------|
+| `lasc-help` | Central de ajuda completa |
+| `lasc-version` | Informações de versão |
 
-### Pré-requisitos
-- Linux (Ubuntu, Debian, Arch, etc)
-- Python 3.7+
-- Git
-- 10GB espaço livre
+### Visual (v1.2.0 - v1.4.0)
+| Comando | Função |
+|---------|--------|
+| `lasc-theme` | Sistema de temas (8 opções) |
+| `lasc-quote` | Frases motivacionais (30 frases) |
+| `lasc-ascii` | Gerador ASCII art (10 palavras) |
 
-### Quick Start
-```bash
-# 1. Instalar pmbootstrap
-pip install pmbootstrap
-
-# 2. Clonar repositório LASC OS
-git clone https://github.com/[seu-usuario]/lasc-os.git
-cd lasc-os
-
-# 3. Extrair customizações
-tar -xzf backups/lasc_scripts.tar.gz -C /
-tar -xzf backups/lasc_backup.tar.gz -C ~/
-
-# 4. Configurar sistema
-source ~/.profile
-
-# 5. Testar
-lasc-fetch
-```
-
-### Instalação Completa (VM)
-```bash
-# Inicializar pmbootstrap
-pmbootstrap init
-
-# Vendor: qemu
-# Device: amd64
-# UI: phosh
-
-# Instalar sistema
-pmbootstrap install
-
-# Iniciar VM
-pmbootstrap qemu --display=none -p 3333 &
-
-# Conectar via SSH
-ssh -p 3333 user@localhost
-
-# Instalar LASC OS
-# [Instruções detalhadas no wiki]
-```
-
-### Instalação em Hardware Real
-
-Dispositivos suportados:
-- **PinePhone / PinePhone Pro** (~$150)
-- **OnePlus 6 / 6T**
-- **Xiaomi Poco F1**
-- **Google Pixel 3a/3aXL**
-
-[Ver guia completo de instalação →](docs/INSTALLATION.md)
-
-## ⚡ Comandos Exclusivos
-
-### Launcher e Menus
-- `android` - Menu principal (15 opções)
-- `store` - Loja de apps (9 opções)
-
-### Sistema
-- `fetch` - Info estilizada
-- `info` - Info detalhada
-- `apps` - Lista de apps instalados
-- `lasc-doctor` - Diagnóstico completo
-- `lasc-clean` - Limpeza do sistema
-- `lasc-backup` - Backup automático
-- `about` - Sobre o sistema
-- **`lasc-network` / `network`** - Gerenciador de rede ✨ **NOVO v1.1**
-- **`lasc-process` / `processos`** - Monitor de processos ✨ **NOVO v1.1**
-- **`lasc-log` / `logs`** - Visualizador de logs ✨ **NOVO v1.1**
-
-### Gerenciamento
-- `lasc-apps` - Instalador interativo (18 apps)
-- `update` - Atualizar sistema
-
-[Documentação completa dos comandos →](docs/COMMANDS.md)
-
-## 🏗️ Arquitetura
-```
-LASC OS
-├── Base: postmarketOS v25.12 (Alpine Linux)
-├── Kernel: Linux 6.18.7-0-lts
-├── Init: systemd
-├── UI: Phosh (Mobile)
-├── Shell: ash (BusyBox)
-└── Package Manager: apk
-```
-
-## 🛠️ Tecnologias
-
-- **Base:** postmarketOS / Alpine Linux
-- **Linguagem:** Shell Script (600+ linhas)
-- **UI Framework:** Phosh (GNOME mobile)
-- **Virtualização:** QEMU/KVM
-- **Build System:** pmbootstrap
-
-## 📚 Documentação
-
-- [Guia de Instalação](docs/INSTALLATION.md)
-- [Comandos Completos](docs/COMMANDS.md)
-- [FAQ](docs/FAQ.md)
-- [Contribuindo](CONTRIBUTING.md)
-- [Roadmap](ROADMAP.md)
-
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Veja [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes.
-
-1. Fork o projeto
-2. Crie sua feature branch (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona MinhaFeature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
-5. Abra um Pull Request
-
-## 📝 Roadmap
-
-### v1.0 (Atual) ✅
-- [x] Sistema base funcional
-- [x] 12 comandos exclusivos
-- [x] Dashboard e launchers
-- [x] Sistema de backup
-- [x] Documentação completa
-
-### v1.1 (Próximo)
-- [ ] Testes em hardware real (PinePhone)
-- [ ] Interface gráfica validada
-- [ ] Waydroid integrado (apps Android)
-- [ ] LASC Store online
-- [ ] Sistema de updates automático
-
-### v2.0 (Futuro)
-- [ ] Multi-dispositivo
-- [ ] Comunidade ativa
-- [ ] Marketplace de temas
-- [ ] Sincronização em nuvem
-
-[Ver roadmap completo →](ROADMAP.md)
-
-## 📄 Licença
-
-**Sistema base:** GPL v3 (postmarketOS/Alpine Linux)  
-**Customizações LASC:** MIT License
-
-Ver [LICENSE](LICENSE) para detalhes.
-
-## 👨‍💻 Autor
-
-**Luiz A. S. Corrêa**  
-- LinkedIn: [Seu LinkedIn]
-- Email: [luizascorrea@hotmail.com]
-- Localização: Pinhais/PR, Brasil
-
-## 🌟 Reconhecimentos
-
-- [postmarketOS](https://postmarketos.org/) - Base do sistema
-- [Alpine Linux](https://alpinelinux.org/) - Distribuição base
-- [Phosh](https://gitlab.gnome.org/World/Phosh) - Interface mobile
-- Comunidade open source 💚
-
-## 📊 Status do Projeto
-
-- **Status:** Beta Público
-- **Versão:** 1.0
-- **Última atualização:** Fevereiro 2026
-- **Dispositivos testados:** QEMU VM (x86_64)
-- **Hardware real:** Em desenvolvimento
-
-## 🔗 Links Úteis
-
-- [Site Oficial](https://lasc-os.com) _(em breve)_
-- [Wiki](https://github.com/lalberto1985/lasc-os/wiki)
-- [Issues](https://github.com/lalberto1985/lasc-os/issues)
-- [Discussões](https://github.com/lalberto1985/lasc-os/discussions)
+### Mobile (v1.3.0)
+| Comando | Função |
+|---------|--------|
+| `lasc-wifi` | Gerenciador WiFi completo |
+| `lasc-battery` | Monitor de bateria |
+| `lasc-brightness` | Controle de brilho |
 
 ---
 
-**LASC OS** - *Privacidade, Liberdade, Controle* 🚀
+## 📦 Apps Instalados (18)
 
-Made with ❤️ in Brazil 🇧🇷
+### Comunicação
+- Firefox ESR
+- Telegram Desktop
+- Geary (Email)
+
+### Mídia
+- Lollypop (Música)
+- Celluloid (Vídeo)
+- Eye of GNOME (Imagens)
+
+### Produtividade
+- Text Editor
+- Calculator
+- Calendar
+- Contacts
+- Clocks
+- Weather
+- Evince (PDF)
+
+### Desenvolvimento
+- Git 2.52.0
+- Python 3.12.12
+- Node.js
+- Vim
+- Htop
+
+---
+
+## 🚀 Instalação
+
+### VM (Testes - Recomendado para começar)
+```bash
