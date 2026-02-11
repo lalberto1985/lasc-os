@@ -3,7 +3,39 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [1.3.0] - 2026-02-10
+## [1.4.0] - 2026-02-10
+
+### 🎨 VISUAL PREMIUM EDITION!
+
+Esta versão transforma o LASC OS em uma experiência visual completa e personalizável!
+
+### ✨ Adicionado
+- **4 Temas Novos** - Total de 8 temas! 🌈
+  - Fire 🔥 - Vermelho intenso
+  - Ice ❄️ - Azul gelo
+  - Sunset 🌅 - Laranja pôr do sol
+  - Forest 🌲 - Verde floresta
+
+- **10 Frases Novas** - Total de 30 frases motivacionais! 💬
+  - Frases sobre programação, Linux e sucesso
+  - Inspiração diária garantida
+
+- **5 ASCII Arts Novos** - Total de 10 palavras! 🎨
+  - CODE, OPEN, FREE, POWER, BRAVE
+  - Arte tipográfica impressionante
+
+### 🔄 Mudado
+- Sistema de temas expandido (4 → 8 opções)
+- lasc-quote com 50% mais conteúdo
+- lasc-ascii com 100% mais palavras
+
+### 📊 Estatísticas
+- **8 temas** disponíveis (personalização máxima!)
+- **30 frases** motivacionais
+- **10 ASCII arts** diferentes
+- Sistema mais divertido e personalizável
+
+---
 
 ### 📱 MOBILE READY!
 
