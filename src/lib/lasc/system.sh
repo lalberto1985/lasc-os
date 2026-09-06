@@ -124,3 +124,51 @@ lasc_process_count() (
         ps | awk 'NR > 1 {count++} END {print count + 0}'
     fi
 )
+
+lasc_disk_usage_percent() (
+    percent=$(df -Pk / 2>/dev/null | awk 'NR==2 {gsub(/%/, "", $5); print $5}')
+
+    case "$percent" in
+        ''|*[!0-9]*)
+            printf '%s\n' "unknown"
+            exit 1
+            ;;
+        *)
+            printf '%s\n' "$percent"
+            ;;
+    esac
+)
+
+lasc_memory_usage_percent() (
+    if [ ! -r /proc/meminfo ]; then
+        printf '%s\n' "unknown"
+        exit 1
+    fi
+
+    total_kib=$(awk '/^MemTotal:/ {print $2}' /proc/meminfo)
+    available_kib=$(awk '/^MemAvailable:/ {print $2}' /proc/meminfo)
+
+    if [ -z "$available_kib" ]; then
+        available_kib=$(awk '
+            /^MemFree:/  {free=$2}
+            /^Buffers:/  {buffers=$2}
+            /^Cached:/   {cached=$2}
+            END {print free + buffers + cached}
+        ' /proc/meminfo)
+    fi
+
+    case "$total_kib" in
+        ''|*[!0-9]*|0)
+            printf '%s\n' "unknown"
+            exit 1
+            ;;
+    esac
+
+    used_kib=$((total_kib - available_kib))
+
+    awk -v used="$used_kib" -v total="$total_kib" '
+        BEGIN {
+            printf "%.0f\n", (used / total) * 100
+        }
+    '
+)
