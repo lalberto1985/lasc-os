@@ -15,6 +15,11 @@ fi
 
 LASC_VERSION=$(lasc_detect_version)
 LASC_BASE=$(lasc_detect_base)
+LASC_KERNEL=$(lasc_kernel)
+LASC_UPTIME=$(lasc_uptime)
+LASC_MEMORY=$(lasc_memory)
+LASC_DISK=$(lasc_disk)
+LASC_PROCESSES=$(lasc_process_count)
 
 echo "╔═══════════════════════════════════════╗"
 echo "║         LASC OS - Informações         ║"
@@ -22,11 +27,11 @@ echo "╚═══════════════════════�
 echo ""
 echo "Versão: $LASC_PRODUCT_NAME v$LASC_VERSION"
 echo "Base: $LASC_BASE"
-echo "Kernel: $(uname -r)"
-echo "Uptime: $(uptime -p 2>/dev/null || uptime | awk '{print $3}')"
-echo "Memória: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
-echo "Disco: $(df -h / | awk 'NR==2 {print $3 "/" $2 " (" $5 ")"}')"
-echo "Processos: $(ps aux | wc -l)"
+echo "Kernel: $LASC_KERNEL"
+echo "Uptime: $LASC_UPTIME"
+echo "Memória: $LASC_MEMORY"
+echo "Disco: $LASC_DISK"
+echo "Processos: $LASC_PROCESSES"
 echo ""
 echo "Desenvolvido por Luiz - $(date +%Y)"
 echo "════════════════════════════════════════"
