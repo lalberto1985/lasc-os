@@ -1,9 +1,23 @@
 #!/bin/sh
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)
+
+if [ -r /usr/lib/lasc-os/version.sh ]; then
+    . /usr/lib/lasc-os/version.sh
+elif [ -r "$SCRIPT_DIR/../lib/lasc/version.sh" ]; then
+    . "$SCRIPT_DIR/../lib/lasc/version.sh"
+else
+    printf '%s\n' "Erro: biblioteca de versão do LASC OS não encontrada." >&2
+    exit 1
+fi
+
+LASC_VERSION=$(lasc_detect_version)
+
 echo "╔═══════════════════════════════════════╗"
 echo "║         LASC OS - Informações         ║"
 echo "╚═══════════════════════════════════════╝"
 echo ""
-echo "Versão: LASC OS v1.0"
+echo "Versão: $LASC_PRODUCT_NAME v$LASC_VERSION"
 echo "Base: postmarketOS v25.12"
 echo "Kernel: $(uname -r)"
 echo "Uptime: $(uptime -p 2>/dev/null || uptime | awk '{print $3}')"
