@@ -1,0 +1,64 @@
+#!/bin/sh
+echo "╔═══════════════════════════════════════╗"
+echo "║    LASC OS - Instalador de Apps       ║"
+echo "╚═══════════════════════════════════════╝"
+echo ""
+echo "📱 COMUNICAÇÃO:"
+echo "1. firefox - Navegador web"
+echo "2. telegram - Mensagens"
+echo "3. geary - Email cliente"
+echo ""
+echo "🎵 MÍDIA:"
+echo "4. lollypop - Player de música"
+echo "5. celluloid - Player de vídeo"
+echo "6. eog - Visualizador de imagens"
+echo ""
+echo "📝 PRODUTIVIDADE:"
+echo "7. gnome-text-editor - Editor de texto"
+echo "8. gnome-weather - Clima"
+echo "9. evince - Leitor de PDF"
+echo "10. gnome-calculator - Calculadora"
+echo "11. gnome-calendar - Calendário"
+echo "12. gnome-contacts - Contatos"
+echo "13. gnome-clocks - Relógio/Alarmes"
+echo ""
+echo "🔧 DESENVOLVIMENTO:"
+echo "14. git - Controle de versão"
+echo "15. python3 - Linguagem Python"
+echo "16. nodejs - JavaScript runtime"
+echo "17. vim - Editor avançado"
+echo "18. htop - Monitor de processos"
+echo ""
+echo "Digite os números separados por espaço (ex: 1 2 4)"
+echo "ou digite 'TUDO' para instalar todos:"
+read -r apps
+
+for app in $apps; do
+    case $app in
+        1) sudo apk add firefox-esr ;;
+        2) sudo apk add telegram-desktop ;;
+        3) sudo apk add geary ;;
+        4) sudo apk add lollypop ;;
+        5) sudo apk add celluloid ;;
+        6) sudo apk add eog ;;
+        7) sudo apk add gnome-text-editor ;;
+        8) sudo apk add gnome-weather ;;
+        9) sudo apk add evince ;;
+        10) sudo apk add gnome-calculator ;;
+        11) sudo apk add gnome-calendar ;;
+        12) sudo apk add gnome-contacts ;;
+        13) sudo apk add gnome-clocks ;;
+        14) sudo apk add git ;;
+        15) sudo apk add python3 py3-pip ;;
+        16) sudo apk add nodejs npm ;;
+        17) sudo apk add vim ;;
+        18) sudo apk add htop ;;
+        TUDO) 
+            sudo apk add firefox-esr telegram-desktop geary lollypop celluloid eog gnome-text-editor gnome-weather evince gnome-calculator gnome-calendar gnome-contacts gnome-clocks git python3 py3-pip nodejs npm vim htop
+            ;;
+        *) echo "Opção $app inválida" ;;
+    esac
+done
+
+echo ""
+echo "✓ Instalação concluída!"

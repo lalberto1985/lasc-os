@@ -1,0 +1,29 @@
+k#!/bin/sh
+
+clear
+echo -e "\033[1;36m╔═══════════════════════════════════════╗\033[0m"
+echo -e "\033[1;36m║  LASC OS - Gerenciador de Processos   ║\033[0m"
+echo -e "\033[1;36m╚═══════════════════════════════════════╝\033[0m"
+echo -e ""
+
+# Total de processos
+TOTAL=$(ps | wc -l)
+RUNNING=$(ps | grep -c "R")
+SLEEPING=$(ps | grep -c "S")
+
+echo -e "\033[1;33m📊 ESTATÍSTICAS:\033[0m"
+echo -e "   Total:     \033[1;36m$TOTAL processos\033[0m"
+echo -e "   Rodando:   \033[1;32m$RUNNING\033[0m"
+echo -e "   Dormindo:  \033[1;35m$SLEEPING\033[0m"
+echo -e ""
+
+# Processos principais
+echo -e "\033[1;33m🔥 PROCESSOS ATIVOS:\033[0m"
+ps aux | grep -v "ps aux" | grep -v "grep" | head -15 | tail -10 | awk '{print "   " $11}' | sed 's/\[//g' | sed 's/\]//g'
+echo -e ""
+
+echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e ""
+echo -e "\033[1;36m💡 Para monitoramento detalhado use:\033[0m"
+echo -e "   \033[1;32mhtop\033[0m - Monitor interativo completo"
+echo -e ""

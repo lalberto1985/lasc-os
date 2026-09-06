@@ -1,0 +1,33 @@
+#!/bin/sh
+
+clear
+echo -e "\033[1;36m╔═══════════════════════════════════════╗\033[0m"
+echo -e "\033[1;36m║    LASC OS - Limpeza do Sistema       ║\033[0m"
+echo -e "\033[1;36m╚═══════════════════════════════════════╝\033[0m"
+echo -e ""
+
+BEFORE=$(df / | awk 'NR==2 {print $3}')
+
+echo -e "\033[1;33m🧹 Limpando cache do APK...\033[0m"
+sudo apk cache clean
+echo -e "   \033[1;32m✓ Cache limpo\033[0m"
+
+echo -e "\033[1;33m🧹 Removendo arquivos temporários...\033[0m"
+sudo rm -rf /tmp/* 2>/dev/null
+echo -e "   \033[1;32m✓ Temporários removidos\033[0m"
+
+echo -e "\033[1;33m🧹 Limpando logs antigos...\033[0m"
+sudo journalctl --vacuum-time=7d 2>/dev/null
+echo -e "   \033[1;32m✓ Logs otimizados\033[0m"
+
+AFTER=$(df / | awk 'NR==2 {print $3}')
+FREED=$((BEFORE - AFTER))
+
+echo -e ""
+echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\033[1;32m✓ Limpeza concluída!\033[0m"
+echo -e ""
+echo -e "Espaço liberado: \033[1;36m${FREED}KB\033[0m"
+echo -e ""
+df -h / | tail -1
+echo -e ""

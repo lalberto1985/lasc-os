@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Informações do sistema
+OS="LASC OS v1.0"
+KERNEL=$(uname -r)
+UPTIME=$(uptime | awk '{print $3}' | sed 's/,//')
+SHELL=$(basename "$SHELL")
+MEMORY=$(free -h | awk '/^Mem:/ {print $3 " / " $2}')
+DISK=$(df -h / | awk 'NR==2 {print $3 " / " $2 " (" $5 ")"}')
+
+# Logo e info
+printf "\n"
+printf "\033[1;36m╔═══════════════════════════════════════╗\033[0m\n"
+printf "\033[1;36m║   \033[1;32m██╗      █████╗ ███████╗ ██████╗\033[1;36m    ║\033[0m\n"
+printf "\033[1;36m║   \033[1;32m██║     ██╔══██╗██╔════╝██╔════╝\033[1;36m    ║\033[0m\n"
+printf "\033[1;36m║   \033[1;32m██║     ███████║███████╗██║\033[1;36m         ║\033[0m\n"
+printf "\033[1;36m║   \033[1;32m██║     ██╔══██║╚════██║██║\033[1;36m         ║\033[0m\n"
+printf "\033[1;36m║   \033[1;32m███████╗██║  ██║███████║╚██████╗\033[1;36m    ║\033[0m\n"
+printf "\033[1;36m║   \033[1;32m╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝\033[1;36m    ║\033[0m\n"
+printf "\033[1;36m╚═══════════════════════════════════════╝\033[0m\n\n"
+printf "\033[1;35muser\033[0m@\033[1;33mlasc\033[0m\n"
+printf "\033[1;36m─────────────────────\033[0m\n"
+printf "\033[1;35mOS:\033[0m       %s\n" "$OS"
+printf "\033[1;35mKernel:\033[0m   %s\n" "$KERNEL"
+printf "\033[1;35mUptime:\033[0m   %s\n" "$UPTIME"
+printf "\033[1;35mShell:\033[0m    %s\n" "$SHELL"
+printf "\033[1;35mMemory:\033[0m   %s\n" "$MEMORY"
+printf "\033[1;35mDisk:\033[0m     %s\n" "$DISK"
+printf "\n\033[1;32mDesenvolvido por Luiz AS Correa - 2026\033[0m\n\n"

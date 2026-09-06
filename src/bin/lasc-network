@@ -1,0 +1,64 @@
+#!/bin/sh
+
+clear
+echo -e "\033[1;36m╔═══════════════════════════════════════╗\033[0m"
+echo -e "\033[1;36m║    LASC OS - Gerenciador de Rede      ║\033[0m"
+echo -e "\033[1;36m╚═══════════════════════════════════════╝\033[0m"
+echo -e ""
+
+# Interface ativa
+echo -e "\033[1;33m🌐 INTERFACES DE REDE:\033[0m"
+ifconfig | grep -E "^[a-z]" | grep -v "lo" | while read line; do
+    iface=$(echo $line | awk '{print $1}')
+    if ifconfig $iface | grep -q "UP"; then
+        addr=$(ifconfig $iface | grep "inet addr" | awk '{print $2}' | cut -d: -f2)
+        echo -e "   \033[1;32m● $iface\033[0m - UP ($addr)"
+    else
+        echo -e "   \033[1;31m○ $iface\033[0m - DOWN"
+    fi
+done
+
+echo -e ""
+
+# IP e Gateway
+echo -e "\033[1;33m📍 ENDEREÇOS:\033[0m"
+IP=$(ip route get 1 2>/dev/null | awk '{print $7}' | head -1)
+GATEWAY=$(ip route | grep default | awk '{print $3}' | head -1)
+DNS=$(cat /etc/resolv.conf | grep nameserver | head -1 | awk '{print $2}')
+
+echo -e "   IP Local:  \033[1;36m${IP:-Não detectado}\033[0m"
+echo -e "   Gateway:   \033[1;36m${GATEWAY:-Não detectado}\033[0m"
+echo -e "   DNS:       \033[1;36m${DNS:-Não detectado}\033[0m"
+
+echo -e ""
+
+# Teste de conectividade
+echo -e "\033[1;33m🔌 TESTE DE CONECTIVIDADE:\033[0m"
+
+if ping -c 1 -W 2 8.8.8.8 >/dev/null 2>&1; then
+    echo -e "   Internet:  \033[1;32m● Online\033[0m"
+    
+    # Latência
+    PING=$(ping -c 3 8.8.8.8 2>/dev/null | tail -1 | awk -F'/' '{print $5}')
+    if [ -n "$PING" ]; then
+        echo -e "   Latência:  \033[1;36m${PING}ms\033[0m"
+    fi
+else
+    echo -e "   Internet:  \033[1;31m● Offline\033[0m"
+fi
+
+echo -e ""
+
+# Informações adicionais
+echo -e "\033[1;33m📊 ESTATÍSTICAS:\033[0m"
+RX=$(cat /sys/class/net/eth0/statistics/rx_bytes 2>/dev/null || echo "0")
+TX=$(cat /sys/class/net/eth0/statistics/tx_bytes 2>/dev/null || echo "0")
+RX_MB=$((RX / 1024 / 1024))
+TX_MB=$((TX / 1024 / 1024))
+
+echo -e "   Recebido:  \033[1;36m${RX_MB}MB\033[0m"
+echo -e "   Enviado:   \033[1;36m${TX_MB}MB\033[0m"
+
+echo -e ""
+echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e ""

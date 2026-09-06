@@ -1,0 +1,12 @@
+#!/bin/sh
+echo "╔═══════════════════════════════════════╗"
+echo "║      LASC OS - Sistema de Updates     ║"
+echo "╚═══════════════════════════════════════╝"
+echo ""
+echo "Atualizando repositórios..."
+sudo apk update
+echo ""
+echo "Atualizando pacotes instalados..."
+sudo apk upgrade
+echo ""
+echo "✓ LASC OS atualizado com sucesso!"

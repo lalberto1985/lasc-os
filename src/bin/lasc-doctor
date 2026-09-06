@@ -1,0 +1,62 @@
+#!/bin/sh
+
+clear
+echo -e "\033[1;36m╔═══════════════════════════════════════╗\033[0m"
+echo -e "\033[1;36m║     LASC OS - Diagnóstico System      ║\033[0m"
+echo -e "\033[1;36m╚═══════════════════════════════════════╝\033[0m"
+echo -e ""
+
+ISSUES=0
+
+# Verificar espaço em disco
+echo -e "\033[1;33m🔍 Verificando espaço em disco...\033[0m"
+DISK_USAGE=$(df / | awk 'NR==2 {print $5}' | sed 's/%//')
+if [ $DISK_USAGE -gt 80 ]; then
+    echo -e "   \033[1;31m✗ AVISO: Disco está ${DISK_USAGE}% cheio!\033[0m"
+    ISSUES=$((ISSUES + 1))
+else
+    echo -e "   \033[1;32m✓ Espaço OK (${DISK_USAGE}% usado)\033[0m"
+fi
+
+# Verificar memória
+echo -e "\033[1;33m🔍 Verificando memória...\033[0m"
+MEM_PERCENT=$(free | awk '/^Mem:/ {printf "%.0f", ($3/$2)*100}')
+if [ $MEM_PERCENT -gt 90 ]; then
+    echo -e "   \033[1;31m✗ AVISO: Memória está ${MEM_PERCENT}% em uso!\033[0m"
+    ISSUES=$((ISSUES + 1))
+else
+    echo -e "   \033[1;32m✓ Memória OK (${MEM_PERCENT}% usado)\033[0m"
+fi
+
+# Verificar comandos LASC
+echo -e "\033[1;33m🔍 Verificando comandos LASC...\033[0m"
+COMMANDS="lasc-store lasc-fetch lasc-info lasc-apps lasc-update lasc-dashboard lasc-android lasc-list lasc-about lasc-clean lasc-doctor lasc-network lasc-process lasc-log lasc-backup"
+for cmd in $COMMANDS; do
+    if command -v $cmd >/dev/null 2>&1; then
+        echo -e "   \033[1;32m✓\033[0m $cmd"
+    else
+        echo -e "   \033[1;31m✗ $cmd não encontrado!\033[0m"
+        ISSUES=$((ISSUES + 1))
+    fi
+done
+
+# Verificar apps essenciais
+echo -e "\033[1;33m🔍 Verificando apps essenciais...\033[0m"
+APPS="firefox telegram-desktop htop git python3"
+for app in $APPS; do
+    if command -v $app >/dev/null 2>&1; then
+        echo -e "   \033[1;32m✓\033[0m $app"
+    else
+        echo -e "   \033[1;33m⚠\033[0m $app não instalado"
+    fi
+done
+
+echo -e ""
+echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+
+if [ $ISSUES -eq 0 ]; then
+    echo -e "\033[1;32m✓ Sistema saudável! Nenhum problema detectado.\033[0m"
+else
+    echo -e "\033[1;33m⚠ $ISSUES problema(s) detectado(s).\033[0m"
+fi
+echo -e ""

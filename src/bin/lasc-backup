@@ -1,0 +1,45 @@
+#!/bin/sh
+
+clear
+echo -e "\033[1;36m╔═══════════════════════════════════════╗\033[0m"
+echo -e "\033[1;36m║      LASC OS - Sistema de Backup      ║\033[0m"
+echo -e "\033[1;36m╚═══════════════════════════════════════╝\033[0m"
+echo -e ""
+
+BACKUP_DIR=~/lasc-backups
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_FILE="$BACKUP_DIR/lasc_backup_$DATE.tar.gz"
+
+echo -e "\033[1;33mIniciando backup...\033[0m"
+echo -e ""
+
+# Criar diretório de backup
+mkdir -p $BACKUP_DIR
+
+# Lista do que será incluído no backup
+echo -e "\033[1;32m✓\033[0m Configurações do usuário (~/.profile)"
+echo -e "\033[1;32m✓\033[0m Documentação (~/LASC-README.md)"
+echo -e "\033[1;32m✓\033[0m Scripts personalizados (/usr/local/bin/lasc-*)"
+echo -e ""
+
+# Criar backup
+tar -czf $BACKUP_FILE \
+    ~/.profile \
+    ~/.bashrc 2>/dev/null \
+    ~/LASC-README.md 2>/dev/null \
+    2>/dev/null
+
+# Backup dos scripts (precisa de sudo)
+echo -e "\033[1;33mBackup de scripts do sistema (requer senha)...\033[0m"
+sudo tar -czf ~/lasc-backups/lasc_scripts_$DATE.tar.gz /usr/local/bin/lasc-* 2>/dev/null
+
+echo -e ""
+echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\033[1;32m✓ Backup concluído!\033[0m"
+echo -e ""
+echo -e "Arquivos salvos em:"
+echo -e "\033[1;36m$BACKUP_FILE\033[0m"
+echo -e "\033[1;36m~/lasc-backups/lasc_scripts_$DATE.tar.gz\033[0m"
+echo -e ""
+ls -lh $BACKUP_DIR
+echo -e ""

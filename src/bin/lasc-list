@@ -1,0 +1,37 @@
+#!/bin/sh
+
+clear
+echo -e "\033[1;36m╔═══════════════════════════════════════════════╗\033[0m"
+echo -e "\033[1;36m║     \033[1;32mLASC OS - Apps Instalados\033[1;36m                 ║\033[0m"
+echo -e "\033[1;36m╚═══════════════════════════════════════════════╝\033[0m"
+echo -e ""
+
+echo -e "\033[1;33m📱 COMUNICAÇÃO:\033[0m"
+which firefox-esr >/dev/null && echo -e "   \033[1;32m✓\033[0m Firefox" || echo -e "   \033[1;31m✗\033[0m Firefox"
+which telegram-desktop >/dev/null && echo -e "   \033[1;32m✓\033[0m Telegram" || echo -e "   \033[1;31m✗\033[0m Telegram"
+which geary >/dev/null && echo -e "   \033[1;32m✓\033[0m Geary (Email)" || echo -e "   \033[1;31m✗\033[0m Geary"
+
+echo -e ""
+echo -e "\033[1;33m🎵 MÍDIA:\033[0m"
+which lollypop >/dev/null && echo -e "   \033[1;32m✓\033[0m Lollypop (Música)" || echo -e "   \033[1;31m✗\033[0m Lollypop"
+which celluloid >/dev/null && echo -e "   \033[1;32m✓\033[0m Celluloid (Vídeo)" || echo -e "   \033[1;31m✗\033[0m Celluloid"
+which eog >/dev/null && echo -e "   \033[1;32m✓\033[0m Eye of GNOME (Imagens)" || echo -e "   \033[1;31m✗\033[0m EOG"
+
+echo -e ""
+echo -e "\033[1;33m📝 PRODUTIVIDADE:\033[0m"
+which gnome-text-editor >/dev/null && echo -e "   \033[1;32m✓\033[0m Editor de Texto" || echo -e "   \033[1;31m✗\033[0m Editor"
+which gnome-calculator >/dev/null && echo -e "   \033[1;32m✓\033[0m Calculadora" || echo -e "   \033[1;31m✗\033[0m Calculadora"
+which gnome-calendar >/dev/null && echo -e "   \033[1;32m✓\033[0m Calendário" || echo -e "   \033[1;31m✗\033[0m Calendário"
+which gnome-contacts >/dev/null && echo -e "   \033[1;32m✓\033[0m Contatos" || echo -e "   \033[1;31m✗\033[0m Contatos"
+which evince >/dev/null && echo -e "   \033[1;32m✓\033[0m Leitor PDF" || echo -e "   \033[1;31m✗\033[0m PDF Reader"
+
+echo -e ""
+echo -e "\033[1;33m🔧 DESENVOLVIMENTO:\033[0m"
+which git >/dev/null && echo -e "   \033[1;32m✓\033[0m Git" || echo -e "   \033[1;31m✗\033[0m Git"
+which python3 >/dev/null && echo -e "   \033[1;32m✓\033[0m Python 3" || echo -e "   \033[1;31m✗\033[0m Python"
+which node >/dev/null && echo -e "   \033[1;32m✓\033[0m Node.js" || echo -e "   \033[1;31m✗\033[0m Node"
+which vim >/dev/null && echo -e "   \033[1;32m✓\033[0m Vim" || echo -e "   \033[1;31m✗\033[0m Vim"
+which htop >/dev/null && echo -e "   \033[1;32m✓\033[0m Htop" || echo -e "   \033[1;31m✗\033[0m Htop"
+
+echo -e ""
+
