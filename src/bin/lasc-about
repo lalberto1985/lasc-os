@@ -1,40 +1,55 @@
 #!/bin/sh
 
-clear
-echo -e ""
-echo -e "\033[1;32m     ██╗      █████╗ ███████╗ ██████╗ \033[0m"
-echo -e "\033[1;32m     ██║     ██╔══██╗██╔════╝██╔════╝ \033[0m"
-echo -e "\033[1;32m     ██║     ███████║███████╗██║      \033[0m"
-echo -e "\033[1;32m     ██║     ██╔══██║╚════██║██║      \033[0m"
-echo -e "\033[1;32m     ███████╗██║  ██║███████║╚██████╗ \033[0m"
-echo -e "\033[1;32m     ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ \033[0m"
-echo -e ""
-echo -e "\033[1;36m        Sistema Operacional Mobile v1.0\033[0m"
-echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e ""
-echo -e "\033[1;33mVersão:\033[0m           LASC OS v1.0 (Beta)"
-echo -e "\033[1;33mCodinome:\033[0m         Genesis"
-echo -e "\033[1;33mData de Build:\033[0m    $(date '+%d/%m/%Y')"
-echo -e "\033[1;33mBase:\033[0m             postmarketOS v25.12"
-echo -e "\033[1;33mKernel:\033[0m           $(uname -r)"
-echo -e "\033[1;33mArquitetura:\033[0m      $(uname -m)"
-echo -e ""
-echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e ""
-echo -e "\033[1;32m👨‍💻 Desenvolvedor\033[0m"
-echo -e "   Luiz AS Correa"
-echo -e "   Pinhais/PR"
-echo -e ""
-echo -e "\033[1;32m📄 Licença\033[0m"
-echo -e "   GPL v3 (Base postmarketOS/Alpine)"
-echo -e "   MIT (Componentes LASC)"
-echo -e ""
-echo -e "\033[1;32m🌐 Links\033[0m"
-echo -e "   GitHub: [Em breve]"
-echo -e "   Docs: ~/LASC-README.md"
-echo -e ""
-echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e ""
-echo -e "\033[1;36m💡 Sistema criado em $(date '+%B %Y')\033[0m"
-echo -e "\033[1;36m   Do zero ao sistema completo em 1 dia!\033[0m"
-echo -e ""
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)
+
+if [ -r /usr/lib/lasc-os/version.sh ] && [ -r /usr/lib/lasc-os/system.sh ]; then
+    . /usr/lib/lasc-os/version.sh
+    . /usr/lib/lasc-os/system.sh
+elif [ -r "$SCRIPT_DIR/../lib/lasc/version.sh" ] && [ -r "$SCRIPT_DIR/../lib/lasc/system.sh" ]; then
+    . "$SCRIPT_DIR/../lib/lasc/version.sh"
+    . "$SCRIPT_DIR/../lib/lasc/system.sh"
+else
+    printf '%s\n' "Erro: bibliotecas do LASC OS não encontradas." >&2
+    exit 1
+fi
+
+LASC_VERSION=$(lasc_detect_version)
+LASC_BASE=$(lasc_detect_base)
+LASC_KERNEL=$(lasc_kernel)
+LASC_ARCH=$(uname -m 2>/dev/null || printf '%s\n' "unknown")
+
+clear 2>/dev/null || :
+
+printf '\n'
+printf '\033[1;32m     ██╗      █████╗ ███████╗ ██████╗ \033[0m\n'
+printf '\033[1;32m     ██║     ██╔══██╗██╔════╝██╔════╝ \033[0m\n'
+printf '\033[1;32m     ██║     ███████║███████╗██║      \033[0m\n'
+printf '\033[1;32m     ██║     ██╔══██║╚════██║██║      \033[0m\n'
+printf '\033[1;32m     ███████╗██║  ██║███████║╚██████╗ \033[0m\n'
+printf '\033[1;32m     ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ \033[0m\n'
+printf '\n'
+
+printf '\033[1;36m        Sistema Operacional Mobile v%s\033[0m\n' "$LASC_VERSION"
+printf '\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m\n\n'
+
+printf '\033[1;33mVersão:\033[0m           %s v%s\n' "$LASC_PRODUCT_NAME" "$LASC_VERSION"
+printf '\033[1;33mCodinome:\033[0m         Genesis\n'
+printf '\033[1;33mBase:\033[0m             %s\n' "$LASC_BASE"
+printf '\033[1;33mKernel:\033[0m           %s\n' "$LASC_KERNEL"
+printf '\033[1;33mArquitetura:\033[0m      %s\n' "$LASC_ARCH"
+
+printf '\n\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m\n\n'
+
+printf '\033[1;32m👨‍💻 Desenvolvedor\033[0m\n'
+printf '   Luiz AS Correa\n'
+printf '   Pinhais/PR\n\n'
+
+printf '\033[1;32m📄 Licença\033[0m\n'
+printf '   GPL v3 (Base postmarketOS/Alpine)\n'
+printf '   MIT (Componentes LASC)\n\n'
+
+printf '\033[1;32m🌐 Links\033[0m\n'
+printf '   GitHub: https://github.com/lalberto1985/lasc-os\n'
+printf '   Documentação: docs/\n'
+
+printf '\n\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m\n\n'
