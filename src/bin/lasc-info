@@ -2,23 +2,26 @@
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)
 
-if [ -r /usr/lib/lasc-os/version.sh ]; then
+if [ -r /usr/lib/lasc-os/version.sh ] && [ -r /usr/lib/lasc-os/system.sh ]; then
     . /usr/lib/lasc-os/version.sh
-elif [ -r "$SCRIPT_DIR/../lib/lasc/version.sh" ]; then
+    . /usr/lib/lasc-os/system.sh
+elif [ -r "$SCRIPT_DIR/../lib/lasc/version.sh" ] && [ -r "$SCRIPT_DIR/../lib/lasc/system.sh" ]; then
     . "$SCRIPT_DIR/../lib/lasc/version.sh"
+    . "$SCRIPT_DIR/../lib/lasc/system.sh"
 else
-    printf '%s\n' "Erro: biblioteca de versão do LASC OS não encontrada." >&2
+    printf '%s\n' "Erro: bibliotecas do LASC OS não encontradas." >&2
     exit 1
 fi
 
 LASC_VERSION=$(lasc_detect_version)
+LASC_BASE=$(lasc_detect_base)
 
 echo "╔═══════════════════════════════════════╗"
 echo "║         LASC OS - Informações         ║"
 echo "╚═══════════════════════════════════════╝"
 echo ""
 echo "Versão: $LASC_PRODUCT_NAME v$LASC_VERSION"
-echo "Base: postmarketOS v25.12"
+echo "Base: $LASC_BASE"
 echo "Kernel: $(uname -r)"
 echo "Uptime: $(uptime -p 2>/dev/null || uptime | awk '{print $3}')"
 echo "Memória: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
