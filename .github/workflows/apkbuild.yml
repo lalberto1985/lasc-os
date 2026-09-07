@@ -60,11 +60,27 @@ jobs:
                 -name "*.apk" \
                 -print
 
-              test -n "$(
+              apk_file="$(
                 find /home/builder/packages \
                   -type f \
                   -name "lasc-os-*.apk" \
                   -print \
                   -quit
               )"
+
+              test -n "$apk_file"
+
+              printf "\n=== TESTE DE INSTALAÇÃO ===\n"
+              apk add "$apk_file"
+
+              test -x /usr/bin/lasc-version
+              test -x /usr/bin/lasc-help
+
+              lasc-version
+              lasc-help >/dev/null
+
+              set -- /usr/bin/lasc-*
+              test "$#" -eq 17
+
+              printf "Comandos LASC instalados: %s\n" "$#"
             '
