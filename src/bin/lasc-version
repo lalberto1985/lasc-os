@@ -18,6 +18,11 @@ lasc_version_usage() {
 }
 
 lasc_find_changelog() {
+    if [ -r /usr/share/lasc-os/CHANGELOG.md ]; then
+        printf '%s\n' "/usr/share/lasc-os/CHANGELOG.md"
+        return 0
+    fi
+
     if [ -r /usr/share/doc/lasc-os/CHANGELOG.md ]; then
         printf '%s\n' "/usr/share/doc/lasc-os/CHANGELOG.md"
         return 0
