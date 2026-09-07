@@ -30,6 +30,9 @@ lasc_version_codename() {
         1.0.0)
             printf '%s\n' "Genesis"
             ;;
+        1.5.0|1.5.0-dev)
+            printf '%s\n' "Foundation"
+            ;;
         *)
             printf '%s\n' "não definido"
             ;;
@@ -46,8 +49,14 @@ lasc_version_status() {
         unknown)
             printf '%s\n' "desconhecido"
             ;;
-        *)
+        1.*)
+            printf '%s\n' "release"
+            ;;
+        2.*)
             printf '%s\n' "estável"
+            ;;
+        *)
+            printf '%s\n' "release"
             ;;
     esac
 }

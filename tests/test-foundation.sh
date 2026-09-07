@@ -136,6 +136,26 @@ else
     fail "lasc-version não retornou a versão esperada"
 fi
 
+. "$LIB_DIR/version.sh"
+
+if [ "$(lasc_version_status "1.5.0-dev")" = "desenvolvimento" ] &&
+   [ "$(lasc_version_status "1.5.0")" = "release" ] &&
+   [ "$(lasc_version_status "2.0.0")" = "estável" ] &&
+   [ "$(lasc_version_status "unknown")" = "desconhecido" ]
+then
+    pass "status distingue desenvolvimento, release e estabilidade"
+else
+    fail "status de versionamento inconsistente"
+fi
+
+if [ "$(lasc_version_codename "1.5.0-dev")" = "Foundation" ] &&
+   [ "$(lasc_version_codename "1.5.0")" = "Foundation" ]
+then
+    pass "Foundation identificada nas versões 1.5.0"
+else
+    fail "codinome Foundation não identificado"
+fi
+
 if "$BIN_DIR/lasc-help" >"$TMP_DIR/help.out" 2>&1; then
     HELP_OK=1
 
