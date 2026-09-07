@@ -27,7 +27,8 @@ jobs:
             -v "$GITHUB_WORKSPACE:/workspace:ro" \
             alpine:3.24 \
             sh -euxc '
-              apk add --no-cache alpine-sdk atools-go
+              apk update
+              apk add alpine-sdk atools-go
 
               adduser -D builder
               addgroup builder abuild
