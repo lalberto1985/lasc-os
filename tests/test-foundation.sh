@@ -7,6 +7,7 @@ ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." 2>/dev/null && pwd)
 BIN_DIR="$ROOT/src/bin"
 LIB_DIR="$ROOT/src/lib/lasc"
 VERSION_FILE="$ROOT/VERSION"
+INSTALLER="$ROOT/scripts/install.sh"
 
 FAILURES=0
 
@@ -53,7 +54,7 @@ lasc-version
 printf 'LASC OS - Foundation Tests\n'
 printf '==========================\n\n'
 
-printf '[1/7] Estrutura do projeto\n'
+printf '[1/8] Estrutura do projeto\n'
 
 if [ -r "$VERSION_FILE" ]; then
     pass "VERSION existe"
@@ -81,7 +82,7 @@ if [ "$FAILURES" -eq 0 ]; then
     pass "todos os comandos esperados estão executáveis"
 fi
 
-printf '\n[2/7] Bibliotecas compartilhadas\n'
+printf '\n[2/8] Bibliotecas compartilhadas\n'
 
 for lib in version.sh system.sh privilege.sh; do
     if [ -r "$LIB_DIR/$lib" ]; then
@@ -91,11 +92,11 @@ for lib in version.sh system.sh privilege.sh; do
     fi
 done
 
-printf '\n[3/7] Sintaxe POSIX shell\n'
+printf '\n[3/8] Sintaxe POSIX shell\n'
 
 SYNTAX_FAILURE=0
 
-for file in "$BIN_DIR"/lasc-* "$LIB_DIR"/*.sh; do
+for file in "$BIN_DIR"/lasc-* "$LIB_DIR"/*.sh "$INSTALLER"; do
     if ! sh -n "$file"; then
         fail "erro de sintaxe em $file"
         SYNTAX_FAILURE=1
@@ -103,10 +104,10 @@ for file in "$BIN_DIR"/lasc-* "$LIB_DIR"/*.sh; do
 done
 
 if [ "$SYNTAX_FAILURE" -eq 0 ]; then
-    pass "todos os comandos e bibliotecas passam em sh -n"
+    pass "comandos, bibliotecas e instalador passam em sh -n"
 fi
 
-printf '\n[4/7] Padrões legados/perigosos\n'
+printf '\n[4/8] Padrões legados/perigosos\n'
 
 LEGACY_PATTERN='echo -e|read -p|/usr/local/bin/lasc-|postmarketOS v25\.12|ifconfig|ps aux|rm -rf /tmp/\*|sudo[[:space:]]+(apk|rm|tar|journalctl)|doas[[:space:]]+(apk|rm|tar|journalctl)'
 
@@ -114,6 +115,7 @@ if grep -nE \
     "$LEGACY_PATTERN" \
     "$BIN_DIR"/lasc-* \
     "$LIB_DIR"/*.sh \
+    "$INSTALLER" \
     >"$TMP_DIR/legacy.txt" 2>/dev/null
 then
     fail "padrões legados/perigosos encontrados"
@@ -122,7 +124,7 @@ else
     pass "nenhum padrão legado/perigoso encontrado"
 fi
 
-printf '\n[5/7] Metadados e ajuda\n'
+printf '\n[5/8] Metadados e ajuda\n'
 
 VERSION_VALUE=$(cat "$VERSION_FILE")
 
@@ -151,7 +153,7 @@ else
     fail "lasc-help falhou"
 fi
 
-printf '\n[6/7] Operações seguras\n'
+printf '\n[6/8] Operações seguras\n'
 
 if "$BIN_DIR/lasc-clean" --dry-run >"$TMP_DIR/clean.out" 2>&1 &&
    grep -F "Simulação concluída" "$TMP_DIR/clean.out" >/dev/null
@@ -173,7 +175,96 @@ else
     fail "lasc-backup --dry-run alterou o ambiente ou falhou"
 fi
 
-printf '\n[7/7] Menus e cancelamento\n'
+printf '\n[7/8] Instalador de desenvolvimento\n'
+
+INSTALL_ROOT="$TMP_DIR/install-root"
+
+if [ -x "$INSTALLER" ]; then
+    pass "scripts/install.sh está executável"
+else
+    fail "scripts/install.sh não está executável"
+fi
+
+if DESTDIR="$INSTALL_ROOT" \
+   "$INSTALLER" >"$TMP_DIR/install.out" 2>&1
+then
+    INSTALL_OK=1
+
+    set -- "$INSTALL_ROOT"/usr/bin/lasc-*
+
+    if [ "$#" -eq 17 ] && [ -f "$1" ]; then
+        pass "instalador entrega 17 comandos"
+    else
+        fail "instalador não entregou exatamente 17 comandos"
+        INSTALL_OK=0
+    fi
+
+    for cmd in $EXPECTED_COMMANDS; do
+        if [ ! -x "$INSTALL_ROOT/usr/bin/$cmd" ]; then
+            fail "comando instalado ausente ou sem execução: $cmd"
+            INSTALL_OK=0
+        fi
+    done
+
+    set -- "$INSTALL_ROOT"/usr/lib/lasc-os/*.sh
+
+    if [ "$#" -eq 3 ] && [ -f "$1" ]; then
+        pass "instalador entrega 3 bibliotecas"
+    else
+        fail "instalador não entregou exatamente 3 bibliotecas"
+        INSTALL_OK=0
+    fi
+
+    for lib in version.sh system.sh privilege.sh; do
+        if [ ! -r "$INSTALL_ROOT/usr/lib/lasc-os/$lib" ] ||
+           [ -x "$INSTALL_ROOT/usr/lib/lasc-os/$lib" ]
+        then
+            fail "biblioteca instalada inválida: $lib"
+            INSTALL_OK=0
+        fi
+    done
+
+    for metadata in \
+        usr/share/lasc-os/VERSION \
+        usr/share/lasc-os/CHANGELOG.md \
+        usr/share/doc/lasc-os/README.md \
+        usr/share/licenses/lasc-os/LICENSE
+    do
+        if [ ! -r "$INSTALL_ROOT/$metadata" ]; then
+            fail "arquivo instalado ausente: $metadata"
+            INSTALL_OK=0
+        fi
+    done
+
+    if [ ! -e "$INSTALL_ROOT/usr/local" ]; then
+        pass "instalador usa o mesmo layout do APK"
+    else
+        fail "instalador criou conteúdo legado em /usr/local"
+        INSTALL_OK=0
+    fi
+
+    if [ "$INSTALL_OK" -eq 1 ]; then
+        pass "instalação em DESTDIR validada"
+    fi
+else
+    fail "scripts/install.sh falhou com DESTDIR"
+    cat "$TMP_DIR/install.out" >&2
+fi
+
+INSTALL_LEGACY_PATTERN='backups/|lasc_scripts_|lasc_backup_|tar[[:space:]]+-x|/usr/local/bin'
+
+if grep -nE \
+    "$INSTALL_LEGACY_PATTERN" \
+    "$INSTALLER" \
+    >"$TMP_DIR/install-legacy.txt" 2>/dev/null
+then
+    fail "instalador ainda contém fluxo legado"
+    cat "$TMP_DIR/install-legacy.txt"
+else
+    pass "instalador não depende de backups ou tarballs legados"
+fi
+
+printf '\n[8/8] Menus e cancelamento\n'
 
 if printf '0\n' |
    "$BIN_DIR/lasc-apps" >"$TMP_DIR/apps.out" 2>&1
