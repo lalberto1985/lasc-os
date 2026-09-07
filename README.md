@@ -1,107 +1,229 @@
-# LASC OS - Sistema Operacional Mobile Linux
-
-![Version](https://img.shields.io/badge/version-1.4.0-brightgreen)
-![License](https://img.shields.io/badge/license-MIT%20%2B%20GPL%20v3-blue)
-![Platform](https://img.shields.io/badge/platform-Linux%20Mobile-orange)
-![Commands](https://img.shields.io/badge/commands-23%20exclusive-yellow)
-![Apps](https://img.shields.io/badge/apps-18%20installed-purple)
-![Status](https://img.shields.io/badge/status-Mobile%20Ready-green)
-![Language](https://img.shields.io/badge/language-Shell-lightgrey)
-![Made in Brazil](https://img.shields.io/badge/made%20in-Brazil%20🇧🇷-green)
-
-Sistema Operacional Mobile Linux completo, baseado em postmarketOS, com interface Android-style e 23 comandos exclusivos.
-
-**Privacidade • Liberdade • Controle**
-
----
-
-## 🎯 Sobre o LASC OS
-
-LASC OS é um sistema operacional mobile Linux desenvolvido do zero, focado em:
-- **Privacidade**: Sem rastreamento, sem telemetria
-- **Liberdade**: 100% open source, você controla tudo
-- **Personalização**: 8 temas visuais, comandos customizáveis
-
-Baseado em postmarketOS (Alpine Linux), oferece uma experiência mobile completa via terminal e interface gráfica Phosh.
-
----
-
-## ✨ Features
-
-### 🚀 Sistema Completo
-- **23 comandos exclusivos** desenvolvidos do zero
-- **18 aplicativos** instalados (Firefox, Telegram, Git, Python, etc)
-- **Dashboard automático** no login
-- **Launcher Android-style** com 21 opções
-- **Store Hub** com 15 ferramentas
-
-### 📱 Mobile Ready
-- ✅ **WiFi Manager** - Gerenciador completo de redes
-- ✅ **Battery Monitor** - Monitor de bateria com alertas
-- ✅ **Brightness Control** - Controle de brilho interativo
-- ✅ **Network Status** - Status de rede em tempo real
-- ✅ **Process Manager** - Gerenciador de processos
-
-### 🎨 Personalização
-
 # LASC OS
 
-### Sistema Operacional Mobile Linux — Open Source
+**Sistema Operacional Mobile Linux — Foundation 1.5.0**
 
-[![Version](https://img.shields.io/badge/version-1.4.0-brightgreen?style=flat-square)](https://github.com/lalberto1985/lasc-os/releases)
-[![License](https://img.shields.io/badge/license-MIT%20%2B%20GPL%20v3-blue?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Linux%20Mobile-orange?style=flat-square)](https://postmarketos.org)
-[![Commands](https://img.shields.io/badge/commands-23%20exclusivos-yellow?style=flat-square)](#comandos-exclusivos)
-[![Apps](https://img.shields.io/badge/apps-18%20instalados-purple?style=flat-square)](#apps-instalados)
-[![Status](https://img.shields.io/badge/status-Mobile%20Ready-brightgreen?style=flat-square)](docs/INSTALLATION.md)
-[![Made in Brazil](https://img.shields.io/badge/made%20in-Brazil%20🇧🇷-009c3b?style=flat-square)](#)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Platform](https://img.shields.io/badge/platform-Alpine%20%2F%20postmarketOS-orange)
+![Commands](https://img.shields.io/badge/commands-17-yellow)
+![Shell](https://img.shields.io/badge/shell-POSIX%20sh-lightgrey)
+![Status](https://img.shields.io/badge/status-1.5.0--dev-informational)
 
 **Privacidade • Liberdade • Controle**
 
-[Instalação](docs/INSTALLATION.md) · [Documentação](docs/) · [Roadmap](docs/ROADMAP.md) · [Contribuir](docs/CONTRIBUTING.md) · [Changelog](docs/CHANGELOG.md)
+LASC OS é um projeto de experiência mobile Linux baseado em
+**postmarketOS**, **Alpine Linux** e no ecossistema Linux mobile.
 
-</div>
+A versão **1.5.0-dev** está focada na fundação técnica do projeto:
+estrutura de código versionada, comandos consistentes, bibliotecas
+compartilhadas, instalação segura, empacotamento APK e validação
+automática.
 
----
-
-## Sobre o LASC OS
-
-LASC OS é um sistema operacional mobile Linux desenvolvido do zero, focado em privacidade, liberdade e personalização. Baseado em **postmarketOS** (Alpine Linux), oferece uma experiência mobile completa via terminal e interface gráfica **Phosh**.
-
-- **Privacidade** — Sem rastreamento, sem telemetria, você controla seus dados
-- **Liberdade** — 100% open source, totalmente auditável
-- **Personalização** — 8 temas visuais, 23 comandos exclusivos, aliases configuráveis
+> A Foundation 1.5.0 ainda é uma versão de desenvolvimento.
+> Recursos de hardware, distribuição pública de pacotes e integrações
+> futuras são tratados separadamente no roadmap.
 
 ---
 
-## Features
+## Estado atual
 
-### Sistema Completo
-- 23 comandos exclusivos desenvolvidos do zero
-- 18 aplicativos instalados (Firefox, Telegram, Git, Python, e mais)
-- Dashboard automático exibido no login
-- Launcher Android-style com 21 opções
-- Store Hub com 15 ferramentas integradas
+A Foundation possui atualmente:
 
-### Mobile Ready
-- **WiFi Manager** — Gerenciamento completo de redes sem fio
-- **Battery Monitor** — Monitor de bateria com alertas e barra visual
-- **Brightness Control** — Controle de brilho com presets e ajuste fino
-- **Network Status** — Diagnóstico de rede em tempo real
-- **Process Manager** — Gerenciamento de processos do sistema
+- 17 comandos `lasc-*`;
+- 3 bibliotecas compartilhadas;
+- shell compatível com POSIX `sh`;
+- pacote Alpine `lasc-os`;
+- subpacote de documentação `lasc-os-doc`;
+- instalador de desenvolvimento a partir do código-fonte;
+- testes automatizados;
+- validação contínua no GitHub Actions.
 
-### Personalização
-- 8 Temas Visuais: Default, Hacker, Candy, Ocean, Fire, Ice, Sunset, Forest
-- 30 Frases Motivacionais diárias aleatórias
-- 10 ASCII Arts personalizáveis
-- 22+ aliases configuráveis no shell
+O runtime utiliza:
+
+~~~text
+/usr/bin/lasc-*
+/usr/lib/lasc-os/
+/usr/share/lasc-os/
+/usr/share/doc/lasc-os/
+/usr/share/licenses/lasc-os/
+~~~
+
+---
+
+## Comandos
+
+### Sistema
+
+| Comando | Função |
+|---------|--------|
+| `lasc-info` | Informações detalhadas do sistema |
+| `lasc-fetch` | Resumo visual do LASC OS |
+| `lasc-dashboard` | Painel geral de recursos do sistema |
+| `lasc-doctor` | Diagnóstico de integridade e dependências |
+| `lasc-network` | Diagnóstico e informações de rede |
+| `lasc-process` | Monitor de processos do sistema |
+| `lasc-log` | Visualizador dos logs recentes |
+
+### Manutenção
+
+| Comando | Função |
+|---------|--------|
+| `lasc-apps` | Instalador de aplicativos |
+| `lasc-update` | Atualização de pacotes do sistema |
+| `lasc-clean` | Limpeza segura de cache, temporários LASC e logs |
+| `lasc-backup` | Backup de configurações e arquivos do LASC OS |
+
+### Interface e utilitários
+
+| Comando | Função |
+|---------|--------|
+| `lasc-android` | Menu principal e launcher do LASC OS |
+| `lasc-store` | Central de ferramentas e manutenção |
+| `lasc-list` | Lista e verifica aplicativos disponíveis |
+| `lasc-about` | Informações institucionais do LASC OS |
+| `lasc-version` | Versão, estado, codinome e novidades |
+| `lasc-help` | Central de ajuda |
+
+Para consultar a ajuda:
+
+~~~sh
+lasc-help
+~~~
+
+Para verificar o ambiente:
+
+~~~sh
+lasc-doctor
+~~~
+
+---
+
+## Estrutura do projeto
+
+~~~text
+lasc-os/
+├── src/
+│   ├── bin/
+│   └── lib/lasc/
+├── packaging/
+│   └── alpine/
+│       └── APKBUILD
+├── scripts/
+│   └── install.sh
+├── tests/
+│   └── test-foundation.sh
+├── docs/
+├── screenshots/
+├── VERSION
+├── LICENSE
+└── README.md
+~~~
+
+---
+
+## Instalação de desenvolvimento
+
+O script `scripts/install.sh` instala diretamente a árvore de código
+do repositório usando o mesmo layout utilizado pelo pacote APK.
+
+A instalação real é destinada a Alpine Linux/postmarketOS e requer
+privilégios administrativos.
+
+~~~sh
+git clone https://github.com/lalberto1985/lasc-os.git
+cd lasc-os
+
+sudo ./scripts/install.sh
+~~~
+
+Depois da instalação:
+
+~~~sh
+lasc-version
+lasc-doctor
+~~~
+
+O instalador não depende de backups históricos nem de extração manual
+de tarballs.
+
+### Teste sem alterar o sistema
+
+O instalador também suporta `DESTDIR`, permitindo validar a instalação
+em um diretório temporário:
+
+~~~sh
+DESTDIR=/tmp/lasc-root ./scripts/install.sh
+~~~
+
+Nesse modo nenhum arquivo é instalado no `/usr` real.
+
+---
+
+## Pacotes Alpine
+
+O empacotamento Alpine está definido em:
+
+~~~text
+packaging/alpine/APKBUILD
+~~~
+
+Atualmente o processo produz:
+
+~~~text
+lasc-os
+lasc-os-doc
+~~~
+
+O pacote principal contém o runtime:
+
+~~~text
+/usr/bin/lasc-*
+/usr/lib/lasc-os/
+/usr/share/lasc-os/VERSION
+/usr/share/lasc-os/CHANGELOG.md
+~~~
+
+O subpacote `lasc-os-doc` contém:
+
+~~~text
+/usr/share/doc/lasc-os/README.md
+/usr/share/licenses/lasc-os/LICENSE
+~~~
+
+Os APKs produzidos pela CI são utilizados atualmente para validar
+construção, instalação e conteúdo dos pacotes.
+
+Um repositório público de pacotes e uma infraestrutura permanente de
+assinatura ainda não fazem parte desta etapa da Foundation.
+
+---
+
+## Testes
+
+A suíte principal pode ser executada com:
+
+~~~sh
+./tests/test-foundation.sh
+~~~
+
+A validação atual cobre:
+
+- estrutura dos 17 comandos;
+- 3 bibliotecas compartilhadas;
+- sintaxe POSIX shell;
+- detecção de padrões legados ou perigosos;
+- versão e central de ajuda;
+- operações seguras de limpeza e backup;
+- instalador utilizando `DESTDIR`;
+- menus e cancelamento seguro.
+
+As mesmas verificações são executadas automaticamente pela CI.
 
 ---
 
 ## Screenshots
 
-| Dashboard | Fetch | Android Launcher |
-|-----------|-------|-----------------|
+| Dashboard | Fetch | Android |
+|-----------|-------|---------|
 | ![Dashboard](screenshots/01-lasc-dashboard.png) | ![Fetch](screenshots/02-lasc-fetch.png) | ![Android](screenshots/03-lasc-android.png) |
 
 | Store | Help | Version |
@@ -110,155 +232,36 @@ LASC OS é um sistema operacional mobile Linux desenvolvido do zero, focado em p
 
 ---
 
-## Estrutura do Repositório
-
-```
-lasc-os/
-├── docs/
-│   ├── CHANGELOG.md        # Histórico de versões
-│   ├── CONTRIBUTING.md     # Guia de contribuição
-│   ├── INSTALLATION.md     # Instruções de instalação
-│   ├── ROADMAP.md          # Planejamento de versões futuras
-│   └── TROUBLESHOOTING.md  # Solução de problemas
-├── scripts/
-│   └── install.sh          # Instalador automático
-├── screenshots/            # Screenshots do sistema (12 imagens)
-├── .gitignore
-├── LICENSE
-└── README.md
-```
-
----
-
-## Comandos Exclusivos (23)
-
-### Core — v1.0.0
-
-| Comando | Função |
-|---------|--------|
-| `lasc-dashboard` | Dashboard automático com status do sistema |
-| `lasc-fetch` | Informações estilizadas com logo ASCII |
-| `lasc-info` | Informações detalhadas do sistema |
-| `lasc-apps` | Instalador de 18 aplicativos |
-| `lasc-update` | Atualizador de sistema |
-| `lasc-store` | Hub com 15 ferramentas |
-| `lasc-android` | Launcher mobile com 21 opções |
-| `lasc-list` | Lista apps instalados |
-| `lasc-clean` | Limpeza de sistema |
-| `lasc-doctor` | Diagnóstico completo (valida todos os 23 comandos) |
-| `lasc-about` | Sobre o sistema |
-| `lasc-backup` | Sistema de backup |
-
-### Sistema — v1.1.0
-
-| Comando | Função |
-|---------|--------|
-| `lasc-network` | Status de rede completo |
-| `lasc-process` | Monitor de processos |
-| `lasc-log` | Visualizador de logs do sistema |
-
-### Usabilidade — v1.1.1
-
-| Comando | Função |
-|---------|--------|
-| `lasc-help` | Central de ajuda completa |
-| `lasc-version` | Informações de versão e novidades |
-
-### Visual — v1.2.0 a v1.4.0
-
-| Comando | Função |
-|---------|--------|
-| `lasc-theme` | Sistema de temas (8 opções) |
-| `lasc-quote` | Frases motivacionais (30 frases) |
-| `lasc-ascii` | Gerador de arte ASCII (10 palavras) |
-
-### Mobile — v1.3.0
-
-| Comando | Função |
-|---------|--------|
-| `lasc-wifi` | Gerenciador WiFi completo |
-| `lasc-battery` | Monitor de bateria |
-| `lasc-brightness` | Controle de brilho |
-
----
-
-## Apps Instalados (18)
-
-| Categoria | Apps |
-|-----------|------|
-| Comunicação | Firefox ESR, Telegram Desktop, Geary |
-| Mídia | Lollypop, Celluloid, Eye of GNOME |
-| Produtividade | Text Editor, Calculator, Calendar, Contacts, Clocks, Weather, Evince |
-| Desenvolvimento | Git 2.52.0, Python 3.12.12, Node.js, Vim, Htop |
-
----
-
-## Instalação
-
-Consulte o guia completo em **[docs/INSTALLATION.md](docs/INSTALLATION.md)**.
-
-### Início Rápido (via script)
-
-```bash
-git clone https://github.com/lalberto1985/lasc-os.git
-cd lasc-os
-bash scripts/install.sh
-```
-
-### Instalação Manual
-
-```bash
-# 1. Clone o repositório
-git clone https://github.com/lalberto1985/lasc-os.git
-cd lasc-os
-
-# 2. Extraia os componentes do sistema
-sudo tar -xzf backups/lasc_scripts_*.tar.gz -C /
-tar -xzf backups/lasc_backup_*.tar.gz -C ~/
-
-# 3. Recarregue o ambiente
-source ~/.profile
-
-# 4. Valide a instalação
-lasc-doctor
-```
-
----
-
 ## Documentação
 
-| Documento | Descrição |
-|-----------|-----------|
-| [INSTALLATION.md](docs/INSTALLATION.md) | Métodos de instalação detalhados |
-| [CHANGELOG.md](docs/CHANGELOG.md) | Histórico de todas as versões |
-| [ROADMAP.md](docs/ROADMAP.md) | Planos para versões futuras |
-| [CONTRIBUTING.md](docs/CONTRIBUTING.md) | Como contribuir com o projeto |
-| [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Solução de problemas comuns |
+| Documento | Conteúdo |
+|-----------|----------|
+| [INSTALLATION.md](docs/INSTALLATION.md) | Instalação e preparação do ambiente |
+| [CHANGELOG.md](docs/CHANGELOG.md) | Histórico de versões |
+| [ROADMAP.md](docs/ROADMAP.md) | Planejamento do projeto |
+| [CONTRIBUTING.md](docs/CONTRIBUTING.md) | Guia de contribuição |
+| [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Diagnóstico e solução de problemas |
 
----
-
-## Contribuindo
-
-Contribuições são bem-vindas! Veja o guia em [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
-
-1. Faça um fork do repositório
-2. Crie uma branch: `git checkout -b feature/MinhaFeature`
-3. Commit suas mudanças: `git commit -m 'feat: adiciona MinhaFeature'`
-4. Push para a branch: `git push origin feature/MinhaFeature`
-5. Abra um Pull Request
+Parte da documentação histórica ainda está sendo atualizada para refletir
+a arquitetura da Foundation 1.5.0.
 
 ---
 
 ## Licença
 
-Distribuído sob as licenças **MIT** e **GPL v3**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+As customizações, scripts e componentes próprios do LASC OS são
+distribuídos sob a licença **MIT**. Consulte [LICENSE](LICENSE).
+
+O projeto utiliza e integra componentes de projetos como Alpine Linux e
+postmarketOS. Esses componentes mantêm suas respectivas licenças
+originais.
 
 ---
 
-<div align="center">
+## Projeto
 
-**LASC OS** — *Privacidade, Liberdade, Controle* 🚀
+**LASC OS**
 
-Desenvolvido com ❤️ no Brasil 🇧🇷
+Sistema Operacional Mobile Linux.
 
-</div>
+**Privacidade • Liberdade • Controle**
