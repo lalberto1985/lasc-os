@@ -49,6 +49,8 @@ jobs:
 
               su builder -c "abuild-keygen -a -n"
 
+              cp /home/builder/.abuild/*.rsa.pub /etc/apk/keys/
+
               su builder -c \
                 "cd /home/builder/aport && abuild -r"
 
