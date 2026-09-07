@@ -1,0 +1,67 @@
+pkgname=lasc-os
+maintainer="Luiz A. S. Correa <luizascorrea@hotmail.com>"
+pkgver=1.5.0_pre
+pkgrel=0
+
+pkgdesc="LASC OS mobile Linux command-line utilities and system experience"
+url="https://github.com/lalberto1985/lasc-os"
+arch="noarch"
+license="MIT"
+
+depends="
+	busybox
+	apk-tools
+	iproute2-minimal
+"
+
+_commit="a3f02e08c4b7ec484e551cf726dfdad7b6ca9342"
+
+source="lasc-os-$_commit.tar.gz::https://github.com/lalberto1985/lasc-os/archive/$_commit.tar.gz"
+
+builddir="$srcdir/$pkgname-$_commit"
+
+check() {
+	cd "$builddir"
+	./tests/test-foundation.sh
+}
+
+package() {
+	install -d \
+		"$pkgdir/usr/bin" \
+		"$pkgdir/usr/lib/lasc-os" \
+		"$pkgdir/usr/share/lasc-os" \
+		"$pkgdir/usr/share/doc/lasc-os" \
+		"$pkgdir/usr/share/licenses/lasc-os"
+
+	for command in "$builddir"/src/bin/lasc-*; do
+		install -m755 \
+			"$command" \
+			"$pkgdir/usr/bin/${command##*/}"
+	done
+
+	for library in "$builddir"/src/lib/lasc/*.sh; do
+		install -m644 \
+			"$library" \
+			"$pkgdir/usr/lib/lasc-os/${library##*/}"
+	done
+
+	install -m644 \
+		"$builddir/VERSION" \
+		"$pkgdir/usr/share/lasc-os/VERSION"
+
+	install -m644 \
+		"$builddir/docs/CHANGELOG.md" \
+		"$pkgdir/usr/share/doc/lasc-os/CHANGELOG.md"
+
+	install -m644 \
+		"$builddir/README.md" \
+		"$pkgdir/usr/share/doc/lasc-os/README.md"
+
+	install -m644 \
+		"$builddir/LICENSE" \
+		"$pkgdir/usr/share/licenses/lasc-os/LICENSE"
+}
+
+sha512sums="
+d8e6f60294617fbe9ace4a560e033265eaf4b3e90107097451b41744021937f5e195b5048d8d456d735c49511bba09382c39952c61fe119fd9f7d831baa0af7d  lasc-os-a3f02e08c4b7ec484e551cf726dfdad7b6ca9342.tar.gz
+"

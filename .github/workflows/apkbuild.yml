@@ -1,0 +1,67 @@
+name: APK Build CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'foundation/**'
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  apkbuild:
+    name: Build Alpine APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Build package on Alpine 3.24
+        shell: bash
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/workspace:ro" \
+            alpine:3.24 \
+            sh -euxc '
+              apk add --no-cache alpine-sdk atools-go
+
+              adduser -D builder
+              addgroup builder abuild
+
+              mkdir -p \
+                /home/builder/aport \
+                /var/cache/distfiles
+
+              cp /workspace/packaging/alpine/APKBUILD \
+                /home/builder/aport/APKBUILD
+
+              cd /home/builder/aport
+              apkbuild-lint APKBUILD
+
+              chgrp abuild /var/cache/distfiles
+              chmod g+w /var/cache/distfiles
+              chown -R builder:builder /home/builder
+
+              su builder -c "abuild-keygen -a -n"
+
+              su builder -c \
+                "cd /home/builder/aport && abuild -r"
+
+              printf "\n=== APK GERADO ===\n"
+              find /home/builder/packages \
+                -type f \
+                -name "*.apk" \
+                -print
+
+              test -n "$(
+                find /home/builder/packages \
+                  -type f \
+                  -name "lasc-os-*.apk" \
+                  -print \
+                  -quit
+              )"
+            '
