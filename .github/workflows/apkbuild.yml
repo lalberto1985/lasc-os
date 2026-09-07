@@ -33,6 +33,10 @@ jobs:
               apk update
               apk add alpine-sdk atools-go
 
+              printf '%s\n' \
+                'PACKAGER="Luiz A. S. Correa <luizascorrea@hotmail.com>"' \
+                >> /etc/abuild.conf
+
               adduser -D builder
               addgroup builder abuild
 
