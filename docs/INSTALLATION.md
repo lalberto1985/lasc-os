@@ -1,257 +1,404 @@
-# Guia de Instalação - LASC OS v1.3.0
+# Instalação — LASC OS Foundation 1.5.0
 
-## 📋 Requisitos
+Este documento descreve os métodos de instalação e validação disponíveis
+na Foundation **1.5.0-dev** do LASC OS.
 
-### Hardware Mínimo
-- **Dispositivo suportado:**
-  - PinePhone / PinePhone Pro (Recomendado)
-  - OnePlus 6 / 6T
-  - Xiaomi Poco F1
-  - Google Pixel 3a / 3aXL
-  - QEMU VM (para testes)
+A Foundation ainda é uma versão de desenvolvimento.
 
-- **Especificações:**
-  - RAM: 2GB+ (4GB recomendado)
-  - Storage: 8GB+ (16GB recomendado)
-  - Bootloader desbloqueado (para devices Android)
-
-### Software Necessário
-- Linux (Ubuntu 20.04+, Debian, Arch, Fedora)
-- Python 3.7+
-- Git
-- pmbootstrap
-- 10GB espaço livre no PC
+O LASC OS é construído sobre o ecossistema Alpine Linux/postmarketOS.
+A preparação do sistema-base e a instalação dos componentes LASC são
+etapas distintas.
 
 ---
 
-## 🚀 Instalação Rápida (VM - Testes)
+## Métodos disponíveis
 
-### 1. Instalar pmbootstrap
-```bash
-pip3 install --user pmbootstrap
-```
+Atualmente existem dois fluxos técnicos:
 
-### 2. Inicializar
-```bash
-pmbootstrap init
-```
+1. instalação de desenvolvimento a partir do código-fonte;
+2. empacotamento Alpine através do `APKBUILD`.
 
-**Configurações:**
-- Vendor: `qemu`
-- Device: `amd64`
-- Username: `user`
-- UI: `phosh`
-- Extra packages: (deixe vazio)
+Os APKs gerados pela CI são usados para validar construção, instalação e
+conteúdo do pacote.
 
-### 3. Instalar Sistema Base
-```bash
-pmbootstrap install
-```
+Ainda não existe nesta etapa um repositório APK público oficial com chave
+de assinatura permanente.
 
-### 4. Iniciar VM
-```bash
-pmbootstrap qemu --display=none -p 3333 &
-```
+---
 
-Aguarde 60 segundos para boot.
+## Requisitos para instalação do LASC OS
 
-### 5. Conectar via SSH
-```bash
-ssh -p 3333 user@localhost
-```
+Para uma instalação real dos componentes LASC são necessários:
 
-Senha: a que você definiu no `pmbootstrap init`
+- Alpine Linux ou postmarketOS;
+- utilitário `apk`;
+- shell POSIX;
+- privilégios administrativos;
+- repositório do LASC OS disponível localmente.
 
-### 6. Instalar LASC OS
-```bash
-# Baixar instalador
-wget https://raw.githubusercontent.com/lalberto1985/lasc-os/main/install.sh
+A versão atual contém:
 
-# Executar
-chmod +x install.sh
-./install.sh
-```
+- 17 comandos `lasc-*`;
+- 3 bibliotecas compartilhadas;
+- arquivos de versão e changelog;
+- documentação e licença.
 
-**OU manualmente:**
-```bash
-# Baixar backups
-wget https://github.com/lalberto1985/lasc-os/raw/main/backups/lasc_scripts_latest.tar.gz
-wget https://github.com/lalberto1985/lasc-os/raw/main/backups/lasc_backup_latest.tar.gz
+---
 
-# Extrair
-sudo tar -xzf lasc_scripts_latest.tar.gz -C /
-tar -xzf lasc_backup_latest.tar.gz -C ~/
+## Preparação do sistema-base
 
-# Recarregar configuração
-source ~/.profile
-```
+O LASC OS não substitui o processo de instalação do Alpine Linux ou do
+postmarketOS.
 
-### 7. Testar
-```bash
+Quando postmarketOS for utilizado, o `pmbootstrap` pertence à etapa de
+preparação do sistema-base.
+
+A configuração de dispositivos, criação de imagens, gravação em mídia e
+flash de hardware devem seguir a documentação do próprio postmarketOS.
+
+A Foundation 1.5.0 não considera suporte a hardware específico concluído
+apenas pela existência de uma configuração no `pmbootstrap`.
+
+---
+
+## Instalação de desenvolvimento
+
+Clone o repositório:
+
+~~~sh
+git clone https://github.com/lalberto1985/lasc-os.git
+cd lasc-os
+~~~
+
+Confirme a versão do código:
+
+~~~sh
+cat VERSION
+~~~
+
+A versão em desenvolvimento deve ser identificada atualmente como:
+
+~~~text
+1.5.0-dev
+~~~
+
+### Executar o instalador
+
+O script deve ser executado com privilégios administrativos no sistema
+Alpine/postmarketOS de destino.
+
+Exemplo com `sudo`, quando disponível:
+
+~~~sh
+sudo ./scripts/install.sh
+~~~
+
+Em ambientes que utilizem outro mecanismo de elevação de privilégio,
+execute o mesmo script como usuário root.
+
+O instalador utiliza o mesmo layout de runtime definido pelo pacote APK:
+
+~~~text
+/usr/bin/lasc-*
+/usr/lib/lasc-os/
+/usr/share/lasc-os/
+/usr/share/doc/lasc-os/
+/usr/share/licenses/lasc-os/
+~~~
+
+O instalador não restaura backups históricos, não extrai tarballs em `/`
+e não instala os comandos em `/usr/local/bin`.
+
+---
+
+## Validação após a instalação
+
+Consulte a versão:
+
+~~~sh
+lasc-version
+~~~
+
+Execute o diagnóstico:
+
+~~~sh
 lasc-doctor
-```
+~~~
 
-Deve mostrar 23 comandos com ✓!
+Consulte a central de ajuda:
 
----
+~~~sh
+lasc-help
+~~~
 
-## 📱 Instalação em Hardware Real
+A Foundation atual possui 17 comandos.
 
-### PinePhone (Mais Fácil)
+Para listar os comandos instalados:
 
-#### 1. Preparar SD Card
-```bash
-pmbootstrap init
-# Vendor: pine64
-# Device: pinephone
-# UI: phosh
-```
+~~~sh
+ls -1 /usr/bin/lasc-*
+~~~
 
-#### 2. Instalar no SD
-```bash
-pmbootstrap install --sdcard=/dev/sdX
-# Substitua sdX pelo seu cartão SD (cuidado!)
-```
+Para verificar as bibliotecas:
 
-#### 3. Instalar LASC OS
-
-Insira o SD no PinePhone, ligue, conecte WiFi e:
-```bash
-ssh user@[IP_DO_PINEPHONE]
-# Execute instalador LASC (passo 6 acima)
-```
+~~~sh
+ls -1 /usr/lib/lasc-os/
+~~~
 
 ---
 
-### OnePlus 6 / 6T (Avançado)
+## Teste isolado com DESTDIR
 
-#### 1. Desbloquear Bootloader
-```bash
-# No PC com Android SDK:
-adb reboot bootloader
-fastboot oem unlock
-```
+Para validar o instalador sem escrever no `/usr` real, utilize um caminho
+absoluto em `DESTDIR`.
 
-⚠️ **AVISO:** Isso apaga todos os dados!
+Exemplo:
 
-#### 2. Preparar Sistema
-```bash
-pmbootstrap init
-# Vendor: oneplus
-# Device: enchilada (OnePlus 6) ou fajita (6T)
-# UI: phosh
-```
+~~~sh
+rm -rf /tmp/lasc-root
 
-#### 3. Flash
-```bash
-pmbootstrap flasher flash_rootfs
-pmbootstrap flasher flash_kernel
-```
+DESTDIR=/tmp/lasc-root ./scripts/install.sh
+~~~
 
-#### 4. Boot
+Os arquivos serão criados em:
 
-Reinicie o dispositivo. No primeiro boot:
-```bash
-# Conecte via SSH (USB ou WiFi)
-ssh user@[IP_DO_DISPOSITIVO]
+~~~text
+/tmp/lasc-root/usr/bin/
+/tmp/lasc-root/usr/lib/lasc-os/
+/tmp/lasc-root/usr/share/lasc-os/
+/tmp/lasc-root/usr/share/doc/lasc-os/
+/tmp/lasc-root/usr/share/licenses/lasc-os/
+~~~
 
-# Instale LASC OS
-```
+Confira a quantidade de comandos:
 
----
+~~~sh
+find /tmp/lasc-root/usr/bin \
+    -maxdepth 1 \
+    -type f \
+    -name 'lasc-*' |
+    wc -l
+~~~
 
-## 🔧 Pós-Instalação
+O resultado esperado para a Foundation atual é:
 
-### Configuração Inicial
-```bash
-# 1. Atualizar sistema
-update
+~~~text
+17
+~~~
 
-# 2. Instalar apps essenciais
-lasc-apps
-# Digite: 14 15 17 18 (Git, Python, Vim, Htop)
+Confira as bibliotecas:
 
-# 3. Escolher tema
-theme
-# Escolha 1-4
+~~~sh
+find /tmp/lasc-root/usr/lib/lasc-os \
+    -maxdepth 1 \
+    -type f \
+    -name '*.sh' |
+    wc -l
+~~~
 
-# 4. Testar WiFi (hardware real)
-wifi
+O resultado esperado é:
 
-# 5. Fazer backup
-lasc-backup
-```
+~~~text
+3
+~~~
 
-### Comandos Úteis
-```bash
-help        # Central de ajuda
-android     # Menu principal
-store       # Hub de ferramentas
-fetch       # Info do sistema
-doctor      # Diagnóstico
-```
+Ao terminar o teste:
+
+~~~sh
+rm -rf /tmp/lasc-root
+~~~
 
 ---
 
-## ❓ Troubleshooting
+## Empacotamento Alpine
 
-### VM não inicia
-```bash
-# Verificar se já está rodando
-ps aux | grep qemu
+A definição do pacote está em:
 
-# Matar processo
-killall qemu-system-x86_64
+~~~text
+packaging/alpine/APKBUILD
+~~~
 
-# Tentar novamente
-pmbootstrap qemu --display=none -p 3333 &
-```
+O processo atual produz dois pacotes:
 
-### SSH não conecta
-```bash
-# Aguardar mais tempo (até 2 minutos)
-# Verificar porta
-sudo lsof -i :3333
+~~~text
+lasc-os
+lasc-os-doc
+~~~
 
-# Limpar known_hosts
-ssh-keygen -f ~/.ssh/known_hosts -R '[localhost]:3333'
-```
+### Pacote principal
 
-### Comandos LASC não encontrados
-```bash
-# Recarregar profile
-source ~/.profile
+O pacote `lasc-os` contém os componentes necessários em runtime:
 
-# Verificar instalação
-ls -la /usr/local/bin/lasc-*
+~~~text
+/usr/bin/lasc-*
+/usr/lib/lasc-os/
+/usr/share/lasc-os/VERSION
+/usr/share/lasc-os/CHANGELOG.md
+~~~
 
-# Reinstalar se necessário
-```
+### Documentação
 
-### Interface gráfica não funciona em VM
-- Normal! GUI só funciona em hardware real
-- Use SSH para tudo em VM
+O subpacote `lasc-os-doc` contém:
+
+~~~text
+/usr/share/doc/lasc-os/README.md
+/usr/share/licenses/lasc-os/LICENSE
+~~~
+
+O empacotamento é validado automaticamente em Alpine Linux pela CI.
 
 ---
 
-## 📚 Próximos Passos
+## APKs gerados pela CI
 
-Após instalação:
-1. Leia `readme` para documentação completa
-2. Execute `help` para ver todos os comandos
-3. Personalize com `theme`
-4. Faça backup: `lasc-backup`
-5. Explore com `android` ou `store`
+A workflow de build:
+
+- valida o `APKBUILD`;
+- executa os testes da Foundation;
+- constrói os pacotes;
+- instala o pacote principal em um ambiente Alpine isolado;
+- verifica os comandos instalados;
+- publica os APKs como artifact da execução.
+
+Esses artifacts são destinados atualmente à validação técnica do
+processo de empacotamento.
+
+Eles ainda não representam um canal público permanente de distribuição.
+
+Não existe nesta etapa:
+
+- repositório APK público oficial;
+- chave permanente de assinatura para distribuição;
+- atualização OTA do LASC OS;
+- canal estável de releases para dispositivos.
+
+Esses itens pertencem a etapas posteriores do projeto.
 
 ---
 
-## 🆘 Suporte
+## Executar os testes da Foundation
 
-- **GitHub Issues:** https://github.com/lalberto1985/lasc-os/issues
-- **Documentação:** README.md completo
-- **Comunidade:** (em breve)
+No diretório raiz do repositório:
+
+~~~sh
+./tests/test-foundation.sh
+~~~
+
+A suíte verifica atualmente:
+
+1. estrutura do projeto;
+2. bibliotecas compartilhadas;
+3. sintaxe POSIX shell;
+4. padrões legados ou perigosos;
+5. metadados e ajuda;
+6. operações seguras;
+7. instalador de desenvolvimento;
+8. menus e cancelamento.
+
+Uma execução válida termina com:
+
+~~~text
+✓ Foundation tests: OK
+~~~
 
 ---
 
-**LASC OS - Sistema Mobile Linux**  
-**Privacidade • Liberdade • Controle** 💚
+## Problemas básicos
+
+### `apk` não encontrado
+
+O instalador real exige Alpine Linux ou postmarketOS.
+
+Confira:
+
+~~~sh
+command -v apk
+cat /etc/os-release
+~~~
+
+O `DESTDIR` pode ser utilizado em outro ambiente apenas para testar o
+layout de instalação.
+
+### Permissão negada
+
+Para uma instalação real, execute o script com privilégios
+administrativos.
+
+Exemplo, quando `sudo` estiver disponível:
+
+~~~sh
+sudo ./scripts/install.sh
+~~~
+
+### Comando LASC não encontrado após a instalação
+
+Confira os arquivos instalados:
+
+~~~sh
+ls -l /usr/bin/lasc-*
+~~~
+
+Depois execute:
+
+~~~sh
+lasc-version
+lasc-doctor
+~~~
+
+Não é necessário recarregar `.profile`, pois os comandos atuais são
+instalados diretamente em `/usr/bin`.
+
+### Biblioteca LASC não encontrada
+
+Confira:
+
+~~~sh
+ls -l /usr/lib/lasc-os/
+~~~
+
+A Foundation atual espera:
+
+~~~text
+version.sh
+system.sh
+privilege.sh
+~~~
+
+---
+
+## Limitações da Foundation 1.5.0
+
+A versão **1.5.0-dev** concentra-se na fundação técnica.
+
+Nesta etapa, a existência do código ou de referências históricas no
+projeto não significa que estejam concluídos ou oficialmente suportados:
+
+- validação em hardware real ainda é uma etapa posterior;
+- suporte específico a dispositivos ainda precisa ser validado;
+- integração com Waydroid não faz parte da Foundation atual;
+- distribuição através de repositório APK público ainda não foi
+  implementada;
+- atualizações OTA ainda não fazem parte desta etapa.
+
+---
+
+## Documentação relacionada
+
+- [README](../README.md)
+- [Troubleshooting](TROUBLESHOOTING.md)
+- [Roadmap](ROADMAP.md)
+- [Changelog](CHANGELOG.md)
+- [Contribuição](CONTRIBUTING.md)
+
+---
+
+## Licença
+
+Os componentes próprios do LASC OS são distribuídos sob a licença MIT.
+
+Alpine Linux, postmarketOS e demais componentes externos mantêm suas
+respectivas licenças.
+
+---
+
+**LASC OS — Privacidade • Liberdade • Controle**
