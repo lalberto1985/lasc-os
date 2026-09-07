@@ -7,6 +7,74 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [1.5.0] - Em desenvolvimento
+
+### Foundation
+
+Esta versão reorganiza o LASC OS sobre uma fundação técnica versionada,
+testável, empacotável e reproduzível.
+
+### Adicionado
+
+- Estrutura de comandos em `src/bin`.
+- Bibliotecas compartilhadas em `src/lib/lasc`:
+  - `version.sh`
+  - `system.sh`
+  - `privilege.sh`
+- Arquivo `VERSION` como fonte de versão do projeto.
+- Suíte automatizada `tests/test-foundation.sh`.
+- Foundation CI.
+- APK Build CI utilizando Alpine Linux.
+- Empacotamento Alpine através de `packaging/alpine/APKBUILD`.
+- Pacote principal `lasc-os`.
+- Subpacote de documentação `lasc-os-doc`.
+- Teste automatizado de instalação do APK.
+- Publicação dos APKs como artifacts da CI.
+- Instalador de desenvolvimento com suporte a `DESTDIR`.
+
+### Alterado
+
+- Runtime consolidado em 17 comandos `lasc-*`.
+- Scripts modernizados para POSIX `sh`.
+- Bibliotecas compartilhadas instaladas em `/usr/lib/lasc-os`.
+- Comandos instalados em `/usr/bin`.
+- Metadados do runtime instalados em `/usr/share/lasc-os`.
+- `lasc-version` passou a utilizar a versão central do projeto.
+- Changelog de runtime passou para `/usr/share/lasc-os/CHANGELOG.md`.
+- Instalador passou a utilizar o mesmo layout do pacote APK.
+- README atualizado para representar a Foundation 1.5.0.
+- Guia de instalação reescrito.
+- Guia de troubleshooting reescrito.
+- Roadmap reorganizado em etapas técnicas até a 2.0.
+
+### Removido
+
+- Dependência de backups históricos como método de instalação.
+- Extração de tarballs diretamente em `/`.
+- Restauração de arquivos do usuário como parte do instalador.
+- Oito tarballs antigos de instalação do estado atual do repositório.
+- Dependência de `/usr/local/bin` para os comandos LASC.
+- Comandos históricos que não fazem parte do runtime atual:
+  - `lasc-theme`
+  - `lasc-quote`
+  - `lasc-ascii`
+  - `lasc-wifi`
+  - `lasc-battery`
+  - `lasc-brightness`
+
+### Validação
+
+- 17 comandos validados automaticamente.
+- 3 bibliotecas compartilhadas validadas.
+- Sintaxe POSIX validada.
+- Padrões legados e perigosos verificados.
+- Operações seguras de limpeza e backup testadas.
+- Instalador validado em ambiente isolado com `DESTDIR`.
+- Pacote APK construído e instalado em Alpine isolado.
+- Pacote de documentação separado do runtime.
+
+---
+
 ## [1.4.0] - 2026-02-10
 
 ### 🎨 Visual Premium Edition
