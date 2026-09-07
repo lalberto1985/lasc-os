@@ -1,12 +1,40 @@
 #!/bin/sh
-echo "╔═══════════════════════════════════════╗"
-echo "║      LASC OS - Sistema de Updates     ║"
-echo "╚═══════════════════════════════════════╝"
-echo ""
-echo "Atualizando repositórios..."
-sudo apk update
-echo ""
-echo "Atualizando pacotes instalados..."
-sudo apk upgrade
-echo ""
-echo "✓ LASC OS atualizado com sucesso!"
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)
+
+if [ -r /usr/lib/lasc-os/privilege.sh ]; then
+    . /usr/lib/lasc-os/privilege.sh
+elif [ -r "$SCRIPT_DIR/../lib/lasc/privilege.sh" ]; then
+    . "$SCRIPT_DIR/../lib/lasc/privilege.sh"
+else
+    printf '%s\n' "Erro: biblioteca de privilégios do LASC OS não encontrada." >&2
+    exit 1
+fi
+
+printf '╔═══════════════════════════════════════╗\n'
+printf '║      LASC OS - Sistema de Updates     ║\n'
+printf '╚═══════════════════════════════════════╝\n\n'
+
+if ! command -v apk >/dev/null 2>&1; then
+    printf '%s\n' \
+        "Erro: gerenciador de pacotes APK não encontrado." >&2
+    printf '%s\n' \
+        "Este comando deve ser executado em Alpine Linux/postmarketOS." >&2
+    exit 1
+fi
+
+printf 'Atualizando repositórios...\n'
+
+if ! lasc_run_as_root apk update; then
+    printf '\nErro: falha ao atualizar os repositórios.\n' >&2
+    exit 1
+fi
+
+printf '\nAtualizando pacotes instalados...\n'
+
+if ! lasc_run_as_root apk upgrade; then
+    printf '\nErro: falha ao atualizar os pacotes instalados.\n' >&2
+    exit 1
+fi
+
+printf '\n✓ LASC OS atualizado com sucesso!\n'
