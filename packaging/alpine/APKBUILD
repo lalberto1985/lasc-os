@@ -1,7 +1,7 @@
 pkgname=lasc-os
 maintainer="Luiz A. S. Correa <luizascorrea@hotmail.com>"
 pkgver=1.5.0_pre
-pkgrel=2
+pkgrel=3
 
 pkgdesc="LASC OS mobile Linux command-line utilities and system experience"
 url="https://github.com/lalberto1985/lasc-os"
@@ -16,7 +16,7 @@ depends="
 
 subpackages="$pkgname-doc"
 
-_commit="7a6d762a6c00f816b3772ca8b6794d53049d2cda"
+_commit="77fc1886236e335e57a64aab6e89c85bf5360652"
 
 source="lasc-os-$_commit.tar.gz::https://github.com/lalberto1985/lasc-os/archive/$_commit.tar.gz"
 
@@ -64,5 +64,5 @@ package() {
 }
 
 sha512sums="
-8fcc23b93d59ce8202fa26ec3fc248d4a661594efff8cee64f9279c8be519c55377e30ef63d219f34c20093d4edcc0f9d10ee1f8cd2374e8e74aa3c325e746cf  lasc-os-7a6d762a6c00f816b3772ca8b6794d53049d2cda.tar.gz
+cb0a89d027f61d5947dc0ec822244d534a9a1bda2c2e342e6038a03a50a2e8835ba5edbbcc5402f5315e848ea9cbaab89a8bd6a13671836e5bded9620928fe23  lasc-os-77fc1886236e335e57a64aab6e89c85bf5360652.tar.gz
 "
