@@ -1,7 +1,7 @@
 pkgname=lasc-os
 maintainer="Luiz A. S. Correa <luizascorrea@hotmail.com>"
 pkgver=1.5.0_pre
-pkgrel=1
+pkgrel=2
 
 pkgdesc="LASC OS mobile Linux command-line utilities and system experience"
 url="https://github.com/lalberto1985/lasc-os"
@@ -13,6 +13,8 @@ depends="
 	apk-tools
 	iproute2-minimal
 "
+
+subpackages="$pkgname-doc"
 
 _commit="7a6d762a6c00f816b3772ca8b6794d53049d2cda"
 

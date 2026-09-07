@@ -70,12 +70,21 @@ jobs:
               apk_file="$(
                 find /home/builder/packages \
                   -type f \
-                  -name "lasc-os-*.apk" \
+                  -name "lasc-os-[0-9]*.apk" \
+                  -print \
+                  -quit
+              )"
+
+              doc_apk="$(
+                find /home/builder/packages \
+                  -type f \
+                  -name "lasc-os-doc-*.apk" \
                   -print \
                   -quit
               )"
 
               test -n "$apk_file"
+              test -n "$doc_apk"
 
               printf "\n=== TESTE DE INSTALAÇÃO ===\n"
               apk add "$apk_file"
@@ -91,7 +100,7 @@ jobs:
 
               printf "Comandos LASC instalados: %s\n" "$#"
 
-              cp "$apk_file" /artifacts/
+              cp "$apk_file" "$doc_apk" /artifacts/
             '
 
       - name: Upload APK artifact
