@@ -21,7 +21,7 @@ source="lasc-os-$_commit.tar.gz::https://github.com/lalberto1985/lasc-os/archive
 builddir="$srcdir/$pkgname-$_commit"
 
 check() {
-        ./tests/test-foundation.sh
+	./tests/test-foundation.sh
 }
 
 package() {
