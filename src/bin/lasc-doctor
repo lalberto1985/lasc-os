@@ -66,6 +66,7 @@ lasc-clean
 lasc-dashboard
 lasc-doctor
 lasc-fetch
+lasc-help
 lasc-info
 lasc-list
 lasc-log

@@ -1,0 +1,105 @@
+#!/bin/sh
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)
+
+lasc_command_status() {
+    if command -v "$1" >/dev/null 2>&1 || [ -x "$SCRIPT_DIR/$1" ]; then
+        printf '\033[1;32m✓\033[0m'
+    else
+        printf '\033[1;31m✗\033[0m'
+    fi
+}
+
+lasc_help_usage() {
+    printf 'Uso: lasc-help [opções]\n\n'
+    printf 'Opções:\n'
+    printf '  -h, --help    Mostra esta ajuda\n'
+}
+
+case "${1:-}" in
+    '')
+        ;;
+    -h|--help)
+        lasc_help_usage
+        exit 0
+        ;;
+    *)
+        printf 'Erro: opção desconhecida: %s\n\n' "$1" >&2
+        lasc_help_usage >&2
+        exit 2
+        ;;
+esac
+
+clear 2>/dev/null || :
+
+printf '\033[1;36m╔══════════════════════════════════════════════════╗\033[0m\n'
+printf '\033[1;36m║            \033[1;32mLASC OS - Central de Ajuda\033[1;36m            ║\033[0m\n'
+printf '\033[1;36m╚══════════════════════════════════════════════════╝\033[0m\n\n'
+
+printf '\033[1;33mCOMANDOS DO SISTEMA\033[0m\n\n'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-info)" \
+    'lasc-info' 'Informações detalhadas do sistema'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-fetch)" \
+    'lasc-fetch' 'Resumo visual do LASC OS'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-dashboard)" \
+    'lasc-dashboard' 'Painel geral de recursos do sistema'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-doctor)" \
+    'lasc-doctor' 'Diagnóstico de integridade e dependências'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-network)" \
+    'lasc-network' 'Diagnóstico e informações de rede'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-process)" \
+    'lasc-process' 'Monitor de processos do sistema'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-log)" \
+    'lasc-log' 'Visualizador dos logs recentes'
+
+printf '\n\033[1;33mMANUTENÇÃO\033[0m\n\n'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-apps)" \
+    'lasc-apps' 'Instalador de aplicativos'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-update)" \
+    'lasc-update' 'Atualização de pacotes do sistema'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-clean)" \
+    'lasc-clean' 'Limpeza segura de cache, temporários LASC e logs'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-backup)" \
+    'lasc-backup' 'Backup de configurações e arquivos do LASC OS'
+
+printf '\n\033[1;33mINTERFACE E UTILITÁRIOS\033[0m\n\n'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-android)" \
+    'lasc-android' 'Menu principal e launcher do LASC OS'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-store)" \
+    'lasc-store' 'Central de ferramentas e manutenção'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-list)" \
+    'lasc-list' 'Lista e verifica aplicativos disponíveis'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-about)" \
+    'lasc-about' 'Informações institucionais do LASC OS'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-version)" \
+    'lasc-version' 'Versão, estado, codinome e novidades'
+
+printf ' %s %-16s %s\n' "$(lasc_command_status lasc-help)" \
+    'lasc-help' 'Esta central de ajuda'
+
+printf '\n\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m\n\n'
+
+printf '\033[1;33mDICAS\033[0m\n\n'
+printf ' • Use \033[1;36mlasc-doctor\033[0m para verificar a saúde do ambiente.\n'
+printf ' • Use \033[1;36mlasc-clean --dry-run\033[0m antes de executar uma limpeza.\n'
+printf ' • Use \033[1;36mlasc-backup --dry-run\033[0m para simular um backup.\n'
+printf ' • Use \033[1;36mlasc-version\033[0m para consultar a versão atual.\n'
+printf ' • Instalações e atualizações dependem de Alpine/postmarketOS e APK.\n'
+
+printf '\nLegenda: \033[1;32m✓\033[0m disponível  \033[1;31m✗\033[0m não encontrado\n\n'
