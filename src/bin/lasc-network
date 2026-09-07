@@ -1,64 +1,168 @@
 #!/bin/sh
 
-clear
-echo -e "\033[1;36m╔═══════════════════════════════════════╗\033[0m"
-echo -e "\033[1;36m║    LASC OS - Gerenciador de Rede      ║\033[0m"
-echo -e "\033[1;36m╚═══════════════════════════════════════╝\033[0m"
-echo -e ""
+lasc_interface_state() {
+    iface=$1
 
-# Interface ativa
-echo -e "\033[1;33m🌐 INTERFACES DE REDE:\033[0m"
-ifconfig | grep -E "^[a-z]" | grep -v "lo" | while read line; do
-    iface=$(echo $line | awk '{print $1}')
-    if ifconfig $iface | grep -q "UP"; then
-        addr=$(ifconfig $iface | grep "inet addr" | awk '{print $2}' | cut -d: -f2)
-        echo -e "   \033[1;32m● $iface\033[0m - UP ($addr)"
-    else
-        echo -e "   \033[1;31m○ $iface\033[0m - DOWN"
+    if [ -r "/sys/class/net/$iface/operstate" ]; then
+        IFS= read -r state < "/sys/class/net/$iface/operstate"
+        printf '%s\n' "$state"
+        return
     fi
-done
 
-echo -e ""
+    printf '%s\n' "unknown"
+}
 
-# IP e Gateway
-echo -e "\033[1;33m📍 ENDEREÇOS:\033[0m"
-IP=$(ip route get 1 2>/dev/null | awk '{print $7}' | head -1)
-GATEWAY=$(ip route | grep default | awk '{print $3}' | head -1)
-DNS=$(cat /etc/resolv.conf | grep nameserver | head -1 | awk '{print $2}')
+lasc_interface_ipv4() {
+    iface=$1
 
-echo -e "   IP Local:  \033[1;36m${IP:-Não detectado}\033[0m"
-echo -e "   Gateway:   \033[1;36m${GATEWAY:-Não detectado}\033[0m"
-echo -e "   DNS:       \033[1;36m${DNS:-Não detectado}\033[0m"
-
-echo -e ""
-
-# Teste de conectividade
-echo -e "\033[1;33m🔌 TESTE DE CONECTIVIDADE:\033[0m"
-
-if ping -c 1 -W 2 8.8.8.8 >/dev/null 2>&1; then
-    echo -e "   Internet:  \033[1;32m● Online\033[0m"
-    
-    # Latência
-    PING=$(ping -c 3 8.8.8.8 2>/dev/null | tail -1 | awk -F'/' '{print $5}')
-    if [ -n "$PING" ]; then
-        echo -e "   Latência:  \033[1;36m${PING}ms\033[0m"
+    if command -v ip >/dev/null 2>&1; then
+        ip -4 addr show dev "$iface" 2>/dev/null |
+            awk '/^[[:space:]]*inet[[:space:]]/ {
+                split($2, addr, "/")
+                print addr[1]
+                exit
+            }'
     fi
+}
+
+lasc_default_interface() {
+    if command -v ip >/dev/null 2>&1; then
+        ip route 2>/dev/null |
+            awk '$1 == "default" {
+                for (i = 1; i <= NF; i++) {
+                    if ($i == "dev" && (i + 1) <= NF) {
+                        print $(i + 1)
+                        exit
+                    }
+                }
+            }'
+    fi
+}
+
+lasc_default_gateway() {
+    if command -v ip >/dev/null 2>&1; then
+        ip route 2>/dev/null |
+            awk '$1 == "default" {
+                for (i = 1; i <= NF; i++) {
+                    if ($i == "via" && (i + 1) <= NF) {
+                        print $(i + 1)
+                        exit
+                    }
+                }
+            }'
+    fi
+}
+
+lasc_dns_server() {
+    if [ -r /etc/resolv.conf ]; then
+        awk '$1 == "nameserver" {print $2; exit}' /etc/resolv.conf
+    fi
+}
+
+lasc_format_bytes() {
+    bytes=${1:-0}
+
+    awk -v bytes="$bytes" '
+        BEGIN {
+            if (bytes >= 1073741824)
+                printf "%.1f GiB\n", bytes / 1073741824
+            else if (bytes >= 1048576)
+                printf "%.1f MiB\n", bytes / 1048576
+            else if (bytes >= 1024)
+                printf "%.1f KiB\n", bytes / 1024
+            else
+                printf "%.0f B\n", bytes
+        }
+    '
+}
+
+lasc_show_interfaces() {
+    found=0
+
+    for iface_path in /sys/class/net/*; do
+        [ -d "$iface_path" ] || continue
+
+        iface=${iface_path##*/}
+        [ "$iface" = "lo" ] && continue
+
+        found=1
+        state=$(lasc_interface_state "$iface")
+        addr=$(lasc_interface_ipv4 "$iface")
+
+        if [ "$state" = "up" ]; then
+            if [ -n "$addr" ]; then
+                printf '   \033[1;32m● %s\033[0m - UP (%s)\n' "$iface" "$addr"
+            else
+                printf '   \033[1;32m● %s\033[0m - UP\n' "$iface"
+            fi
+        else
+            printf '   \033[1;31m○ %s\033[0m - %s\n' "$iface" "$(printf '%s' "$state" | tr '[:lower:]' '[:upper:]')"
+        fi
+    done
+
+    if [ "$found" -eq 0 ]; then
+        printf '   Nenhuma interface de rede detectada.\n'
+    fi
+}
+
+DEFAULT_IFACE=$(lasc_default_interface)
+GATEWAY=$(lasc_default_gateway)
+DNS=$(lasc_dns_server)
+
+if [ -n "$DEFAULT_IFACE" ]; then
+    IP=$(lasc_interface_ipv4 "$DEFAULT_IFACE")
 else
-    echo -e "   Internet:  \033[1;31m● Offline\033[0m"
+    IP=
 fi
 
-echo -e ""
+clear 2>/dev/null || :
 
-# Informações adicionais
-echo -e "\033[1;33m📊 ESTATÍSTICAS:\033[0m"
-RX=$(cat /sys/class/net/eth0/statistics/rx_bytes 2>/dev/null || echo "0")
-TX=$(cat /sys/class/net/eth0/statistics/tx_bytes 2>/dev/null || echo "0")
-RX_MB=$((RX / 1024 / 1024))
-TX_MB=$((TX / 1024 / 1024))
+printf '\033[1;36m╔═══════════════════════════════════════╗\033[0m\n'
+printf '\033[1;36m║    LASC OS - Gerenciador de Rede      ║\033[0m\n'
+printf '\033[1;36m╚═══════════════════════════════════════╝\033[0m\n\n'
 
-echo -e "   Recebido:  \033[1;36m${RX_MB}MB\033[0m"
-echo -e "   Enviado:   \033[1;36m${TX_MB}MB\033[0m"
+printf '\033[1;33m🌐 INTERFACES DE REDE:\033[0m\n'
+lasc_show_interfaces
 
-echo -e ""
-echo -e "\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e ""
+printf '\n\033[1;33m📍 ENDEREÇOS:\033[0m\n'
+printf '   Interface: \033[1;36m%s\033[0m\n' "${DEFAULT_IFACE:-Não detectada}"
+printf '   IP Local:  \033[1;36m%s\033[0m\n' "${IP:-Não detectado}"
+printf '   Gateway:   \033[1;36m%s\033[0m\n' "${GATEWAY:-Não detectado}"
+printf '   DNS:       \033[1;36m%s\033[0m\n' "${DNS:-Não detectado}"
+
+printf '\n\033[1;33m🔌 TESTE DE CONECTIVIDADE:\033[0m\n'
+
+if command -v ping >/dev/null 2>&1; then
+    if ping -c 1 -W 2 8.8.8.8 >/dev/null 2>&1; then
+        printf '   Internet:  \033[1;32m● Online\033[0m\n'
+
+        PING=$(ping -c 3 8.8.8.8 2>/dev/null |
+            awk -F'/' '/^(rtt|round-trip)/ {print $5; exit}')
+
+        if [ -n "$PING" ]; then
+            printf '   Latência:  \033[1;36m%s ms\033[0m\n' "$PING"
+        fi
+    else
+        printf '   Internet:  \033[1;31m● Offline ou ICMP indisponível\033[0m\n'
+    fi
+else
+    printf '   Internet:  \033[1;33m● Teste indisponível (ping não instalado)\033[0m\n'
+fi
+
+printf '\n\033[1;33m📊 ESTATÍSTICAS:\033[0m\n'
+
+if [ -n "$DEFAULT_IFACE" ] &&
+   [ -r "/sys/class/net/$DEFAULT_IFACE/statistics/rx_bytes" ] &&
+   [ -r "/sys/class/net/$DEFAULT_IFACE/statistics/tx_bytes" ]; then
+
+    IFS= read -r RX < "/sys/class/net/$DEFAULT_IFACE/statistics/rx_bytes"
+    IFS= read -r TX < "/sys/class/net/$DEFAULT_IFACE/statistics/tx_bytes"
+
+    printf '   Interface: \033[1;36m%s\033[0m\n' "$DEFAULT_IFACE"
+    printf '   Recebido:  \033[1;36m%s\033[0m\n' "$(lasc_format_bytes "$RX")"
+    printf '   Enviado:   \033[1;36m%s\033[0m\n' "$(lasc_format_bytes "$TX")"
+else
+    printf '   Estatísticas não disponíveis.\n'
+fi
+
+printf '\n\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m\n\n'
