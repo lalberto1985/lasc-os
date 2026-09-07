@@ -13,7 +13,7 @@ Planejamento técnico do LASC OS a partir da Foundation 1.5.0.
 
 | Versão | Foco | Status |
 |--------|------|--------|
-| 1.5.0 | Foundation técnica | 🔄 Em desenvolvimento |
+| 1.5.0 | Foundation técnica | 🔄 Release em finalização |
 | 1.6.0 | Control Center GTK4/Libadwaita | 📅 Planejado |
 | 1.7.0 | Hardware real e PinePhone | 📅 Planejado |
 | 1.8.0 | Distribuição, repositório e updates | 📅 Planejado |

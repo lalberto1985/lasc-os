@@ -1,6 +1,6 @@
 # LASC OS — Troubleshooting
 
-Guia de diagnóstico e solução de problemas da Foundation **1.5.0-dev**.
+Guia de diagnóstico e solução de problemas da Foundation **1.5.0**.
 
 Este documento cobre somente comportamentos e componentes presentes na
 Foundation atual.
@@ -419,7 +419,7 @@ do Alpine/postmarketOS apropriadas ao ambiente.
 
 ## Limitações da Foundation
 
-A Foundation **1.5.0-dev** concentra-se em estrutura, runtime,
+A Foundation **1.5.0** concentra-se em estrutura, runtime,
 empacotamento, instalação e testes.
 
 Nesta etapa não devem ser considerados recursos concluídos apenas por

@@ -1,9 +1,10 @@
 # Instalação — LASC OS Foundation 1.5.0
 
 Este documento descreve os métodos de instalação e validação disponíveis
-na Foundation **1.5.0-dev** do LASC OS.
+na Foundation **1.5.0** do LASC OS.
 
-A Foundation ainda é uma versão de desenvolvimento.
+A Foundation 1.5.0 é uma release da fundação técnica do projeto.
+A primeira versão estável do LASC OS permanece planejada para a 2.0.
 
 O LASC OS é construído sobre o ecossistema Alpine Linux/postmarketOS.
 A preparação do sistema-base e a instalação dos componentes LASC são
@@ -76,10 +77,10 @@ Confirme a versão do código:
 cat VERSION
 ~~~
 
-A versão em desenvolvimento deve ser identificada atualmente como:
+A versão atual deve ser identificada como:
 
 ~~~text
-1.5.0-dev
+1.5.0
 ~~~
 
 ### Executar o instalador
@@ -368,7 +369,7 @@ privilege.sh
 
 ## Limitações da Foundation 1.5.0
 
-A versão **1.5.0-dev** concentra-se na fundação técnica.
+A versão **1.5.0** concentra-se na fundação técnica.
 
 Nesta etapa, a existência do código ou de referências históricas no
 projeto não significa que estejam concluídos ou oficialmente suportados:

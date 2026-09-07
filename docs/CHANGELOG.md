@@ -7,7 +7,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
-## [1.5.0] - Em desenvolvimento
+## [1.5.0] - 2026-09-07
 
 ### Foundation
 

@@ -6,19 +6,20 @@
 ![Platform](https://img.shields.io/badge/platform-Alpine%20%2F%20postmarketOS-orange)
 ![Commands](https://img.shields.io/badge/commands-17-yellow)
 ![Shell](https://img.shields.io/badge/shell-POSIX%20sh-lightgrey)
-![Status](https://img.shields.io/badge/status-1.5.0--dev-informational)
+![Status](https://img.shields.io/badge/status-1.5.0--release-success)
 
 **Privacidade • Liberdade • Controle**
 
 LASC OS é um projeto de experiência mobile Linux baseado em
 **postmarketOS**, **Alpine Linux** e no ecossistema Linux mobile.
 
-A versão **1.5.0-dev** está focada na fundação técnica do projeto:
+A versão **1.5.0** consolida a fundação técnica do projeto:
 estrutura de código versionada, comandos consistentes, bibliotecas
 compartilhadas, instalação segura, empacotamento APK e validação
 automática.
 
-> A Foundation 1.5.0 ainda é uma versão de desenvolvimento.
+> A Foundation 1.5.0 é uma release da fundação técnica do LASC OS.
+> Ela não representa ainda a versão estável 2.0 do projeto.
 > Recursos de hardware, distribuição pública de pacotes e integrações
 > futuras são tratados separadamente no roadmap.
 
