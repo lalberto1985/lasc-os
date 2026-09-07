@@ -53,7 +53,7 @@ versionada, testável, empacotável e reproduzível.
 - [x] Instalar e validar o APK em Alpine isolado
 - [x] Publicar APKs como artifacts da CI
 - [x] Validar metadados do pacote
-- [ ] Atualizar snapshot final da Foundation no `APKBUILD`
+- [x] Atualizar snapshot final da Foundation no `APKBUILD`
 - [ ] Gerar e validar release de pacote final da etapa
 
 ### Testes e CI
