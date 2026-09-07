@@ -79,13 +79,15 @@ git push origin feature/nova-funcionalidade
 
 ### Shell Scripts
 
-- Use `#!/bin/bash` no shebang
-- Compatibilidade POSIX sempre que possível
+- Use `#!/bin/sh` nos scripts da Foundation
+- Mantenha compatibilidade com POSIX `sh`
+- Evite recursos exclusivos do Bash
 - Indentação: **4 espaços**
 - Variáveis locais em `minusculas`, constantes em `MAIUSCULAS`
 - Nomes de funções descritivos em snake_case
-- Comentários em português
+- Comentários em português quando ajudarem a explicar a lógica
 - Valide entradas do usuário
+- Prefira operações seguras e suporte a `--dry-run` quando aplicável
 
 ### Convenção de Commits
 
@@ -104,38 +106,51 @@ tipo: descrição curta em português
 | `feat`     | Nova funcionalidade                         |
 | `fix`      | Correção de bug                             |
 | `docs`     | Alteração em documentação                   |
-| `chore`    | Tarefas de manutenção (refactor, estrutura) |
+| `build`    | Empacotamento e processo de build           |
+| `ci`       | Workflows e automação de CI                 |
+| `chore`    | Tarefas de manutenção                       |
 | `style`    | Formatação, sem mudança de lógica           |
 | `test`     | Adição ou correção de testes                |
 | `refactor` | Refatoração de código                       |
 
 **Exemplos:**
 ```
-feat: adiciona comando lasc-vpn para gerenciamento de VPN
-fix: corrige erro de variável indefinida em lasc-wifi
-docs: atualiza INSTALLATION.md com método via Flatpak
-chore: move scripts para pasta scripts/
+feat: adiciona nova função ao lasc-network
+fix: corrige detecção de versão do sistema
+docs: atualiza guia de instalação
+test: adiciona validação do instalador
+build: atualiza empacotamento Alpine
+ci: atualiza workflow de build do APK
 ```
 
 ---
 
 ## Testando
 
-Antes de submeter um PR, certifique-se de:
+Antes de submeter um PR, execute a validação da Foundation:
 
-```bash
-# Testar em VM (recomendado)
-pmbootstrap qemu --display=none -p 3333
+~~~bash
+./tests/test-foundation.sh
+git diff --check
+~~~
 
-# Executar diagnóstico completo
-lasc-doctor
+Para verificar a sintaxe POSIX de um script alterado:
 
-# Verificar sintaxe dos scripts shell
-shellcheck scripts/*.sh
+~~~bash
+sh -n caminho/do/script.sh
+~~~
 
-# Testar o comando novo manualmente
-lasc-[seu-comando]
-```
+Quando a alteração envolver o instalador, utilize `DESTDIR` para testar
+sem modificar o sistema real:
+
+~~~bash
+rm -rf /tmp/lasc-root
+DESTDIR=/tmp/lasc-root ./scripts/install.sh
+rm -rf /tmp/lasc-root
+~~~
+
+Mudanças que afetem o empacotamento também devem passar pela APK Build CI
+antes de serem consideradas concluídas.
 
 ---
 
