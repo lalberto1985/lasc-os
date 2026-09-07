@@ -1,7 +1,7 @@
 pkgname=lasc-os
 maintainer="Luiz A. S. Correa <luizascorrea@hotmail.com>"
 pkgver=1.5.0_pre
-pkgrel=0
+pkgrel=1
 
 pkgdesc="LASC OS mobile Linux command-line utilities and system experience"
 url="https://github.com/lalberto1985/lasc-os"
@@ -14,7 +14,7 @@ depends="
 	iproute2-minimal
 "
 
-_commit="a3f02e08c4b7ec484e551cf726dfdad7b6ca9342"
+_commit="7a6d762a6c00f816b3772ca8b6794d53049d2cda"
 
 source="lasc-os-$_commit.tar.gz::https://github.com/lalberto1985/lasc-os/archive/$_commit.tar.gz"
 
@@ -50,7 +50,7 @@ package() {
 
 	install -m644 \
 		"$builddir/docs/CHANGELOG.md" \
-		"$pkgdir/usr/share/doc/lasc-os/CHANGELOG.md"
+		"$pkgdir/usr/share/lasc-os/CHANGELOG.md"
 
 	install -m644 \
 		"$builddir/README.md" \
@@ -62,5 +62,5 @@ package() {
 }
 
 sha512sums="
-d8e6f60294617fbe9ace4a560e033265eaf4b3e90107097451b41744021937f5e195b5048d8d456d735c49511bba09382c39952c61fe119fd9f7d831baa0af7d  lasc-os-a3f02e08c4b7ec484e551cf726dfdad7b6ca9342.tar.gz
+8fcc23b93d59ce8202fa26ec3fc248d4a661594efff8cee64f9279c8be519c55377e30ef63d219f34c20093d4edcc0f9d10ee1f8cd2374e8e74aa3c325e746cf  lasc-os-7a6d762a6c00f816b3772ca8b6794d53049d2cda.tar.gz
 "
