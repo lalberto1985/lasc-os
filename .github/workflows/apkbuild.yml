@@ -23,8 +23,11 @@ jobs:
       - name: Build package on Alpine 3.24
         shell: bash
         run: |
+          mkdir -p "$GITHUB_WORKSPACE/artifacts"
+
           docker run --rm \
             -v "$GITHUB_WORKSPACE:/workspace:ro" \
+            -v "$GITHUB_WORKSPACE/artifacts:/artifacts" \
             alpine:3.24 \
             sh -euxc '
               apk update
@@ -83,4 +86,13 @@ jobs:
               test "$#" -eq 17
 
               printf "Comandos LASC instalados: %s\n" "$#"
+
+              cp "$apk_file" /artifacts/
             '
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lasc-os-apk
+          path: artifacts/lasc-os-*.apk
+          if-no-files-found: error
