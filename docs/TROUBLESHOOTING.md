@@ -1,258 +1,485 @@
 # LASC OS — Troubleshooting
 
-Guia de solução de problemas para o LASC OS.
+Guia de diagnóstico e solução de problemas da Foundation **1.5.0-dev**.
+
+Este documento cobre somente comportamentos e componentes presentes na
+Foundation atual.
 
 ---
 
 ## Sumário
 
-- [Problemas de Instalação](#problemas-de-instalacao)
-- [Comandos Não Encontrados](#comandos-nao-encontrados)
-- [Problemas de Interface (Phosh)](#problemas-de-interface-phosh)
-- [Problemas de Rede e WiFi](#problemas-de-rede-e-wifi)
-- [Problemas de Bateria](#problemas-de-bateria)
-- [Erros Comuns](#erros-comuns)
-- [Diagnóstico Geral](#diagnostico-geral)
+- [Instalação](#instalação)
+- [Comandos não encontrados](#comandos-não-encontrados)
+- [Diagnóstico geral](#diagnóstico-geral)
+- [Rede](#rede)
+- [Logs](#logs)
+- [Espaço em disco](#espaço-em-disco)
+- [Bibliotecas](#bibliotecas)
+- [Pacotes APK](#pacotes-apk)
+- [Limitações da Foundation](#limitações-da-foundation)
 - [Suporte](#suporte)
 
 ---
 
-## Problemas de Instalação
+## Instalação
 
-### ❌ "Este instalador requer Alpine Linux ou postmarketOS"
+### "A instalação de sistema requer Alpine Linux ou postmarketOS"
 
-**Causa:** O script `install.sh` foi executado em um sistema não compatível.
+O instalador real verifica a existência do utilitário `apk`.
 
-**Solução:**
-```bash
-# Verificar o sistema operacional
+Confirme o ambiente:
+
+~~~sh
 cat /etc/os-release
+command -v apk
+~~~
 
-# O instalador requer Alpine Linux ou postmarketOS
-# Use pmbootstrap para instalar o sistema base
-```
+A instalação real dos componentes LASC é destinada a Alpine Linux ou
+postmarketOS.
 
----
+Em outro sistema, utilize `DESTDIR` somente para validar o layout:
 
-### ❌ Backup não encontrado durante instalação
-
-**Causa:** Os arquivos `.tar.gz` não estão na pasta `backups/`.
-
-**Solução:**
-```bash
-# Clone o repositório completo antes de instalar
-git clone https://github.com/lalberto1985/lasc-os.git
-cd lasc-os
-bash scripts/install.sh
-```
+~~~sh
+DESTDIR=/tmp/lasc-root ./scripts/install.sh
+~~~
 
 ---
 
-### ❌ Erro de permissão ao extrair arquivos de sistema
+### Instalação exige privilégios administrativos
 
-**Causa:** Tentativa de extrair arquivos em `/` sem privilégios de root.
+Para escrever em `/usr`, o instalador precisa ser executado como root.
 
-**Solução:**
-```bash
-sudo tar -xzf backups/lasc_scripts_*.tar.gz -C /
-```
+Quando `sudo` estiver disponível:
+
+~~~sh
+sudo ./scripts/install.sh
+~~~
+
+O instalador atual não extrai backups ou tarballs históricos.
 
 ---
 
-## Comandos Não Encontrados
+### Testar o instalador sem modificar o sistema
 
-### ❌ "lasc-dashboard: command not found"
+Utilize:
 
-**Causa:** O `.profile` não foi recarregado após a instalação.
+~~~sh
+rm -rf /tmp/lasc-root
+DESTDIR=/tmp/lasc-root ./scripts/install.sh
+~~~
 
-**Solução:**
-```bash
-# Recarregar configurações do shell
-source ~/.profile
+Confira:
 
-# Se o erro persistir, verificar se o arquivo existe
-ls /usr/local/bin/lasc-*
+~~~sh
+find /tmp/lasc-root/usr/bin -maxdepth 1 -name 'lasc-*' -type f | wc -l
+find /tmp/lasc-root/usr/lib/lasc-os -maxdepth 1 -name '*.sh' -type f | wc -l
+~~~
 
-# Executar diagnóstico completo
+A Foundation atual espera:
+
+~~~text
+17 comandos
+3 bibliotecas
+~~~
+
+Depois:
+
+~~~sh
+rm -rf /tmp/lasc-root
+~~~
+
+---
+
+## Comandos não encontrados
+
+### `lasc-dashboard: command not found`
+
+Os comandos atuais são instalados diretamente em:
+
+~~~text
+/usr/bin/
+~~~
+
+Confira:
+
+~~~sh
+ls -l /usr/bin/lasc-*
+~~~
+
+Não é necessário executar `source ~/.profile`.
+
+Se os arquivos não estiverem presentes, reinstale a partir do
+repositório:
+
+~~~sh
+sudo ./scripts/install.sh
+~~~
+
+Depois execute:
+
+~~~sh
+lasc-version
 lasc-doctor
-```
+~~~
 
 ---
 
-### ❌ Aliases não funcionam após reinício
+## Diagnóstico geral
 
-**Causa:** O `.profile` não está sendo carregado automaticamente.
+O primeiro comando para investigar problemas deve ser:
 
-**Solução:**
-```bash
-# Adicionar ao .bashrc se necessário
-echo "source ~/.profile" >> ~/.bashrc
-source ~/.bashrc
-```
+~~~sh
+lasc-doctor
+~~~
 
----
+O diagnóstico atual verifica:
 
-## Problemas de Interface (Phosh)
+- espaço em disco;
+- uso de memória;
+- presença dos 17 comandos LASC;
+- aplicativos opcionais conhecidos.
 
-### ❌ Phosh não inicia após o boot
+Aplicativos opcionais ausentes são tratados como avisos e não significam
+necessariamente que a Foundation esteja quebrada.
 
-**Solução:**
-```bash
-# Verificar status do serviço
-systemctl status phosh
+Para consultar a versão:
 
-# Reiniciar o serviço
-systemctl restart phosh
+~~~sh
+lasc-version
+~~~
 
-# Ver logs de erro
-journalctl -u phosh -n 50
-```
+Para consultar os comandos disponíveis:
 
----
-
-### ❌ Tela preta após login
-
-**Solução:**
-```bash
-# Verificar compositor Wayland
-systemctl status weston
-
-# Forçar reinício da interface
-pkill -HUP phosh
-```
+~~~sh
+lasc-help
+~~~
 
 ---
 
-## Problemas de Rede e WiFi
+## Rede
 
-### ❌ `lasc-wifi` não lista redes disponíveis
+Use:
 
-**Causa:** Interface WiFi inativa ou serviço NetworkManager parado.
-
-**Solução:**
-```bash
-# Verificar interfaces de rede
-ip link show
-
-# Ativar interface WiFi
-sudo ip link set wlan0 up
-
-# Verificar NetworkManager
-systemctl status NetworkManager
-systemctl start NetworkManager
-```
-
----
-
-### ❌ Conectado ao WiFi mas sem acesso à internet
-
-**Solução:**
-```bash
-# Verificar DNS
-cat /etc/resolv.conf
-
-# Testar conectividade
-ping -c 3 8.8.8.8
-
-# Usar lasc-network para diagnóstico
+~~~sh
 lasc-network
-```
+~~~
+
+O comando apresenta:
+
+- interfaces detectadas;
+- estado das interfaces;
+- endereço IPv4;
+- interface padrão;
+- gateway;
+- servidor DNS;
+- conectividade;
+- latência quando disponível;
+- bytes recebidos e enviados.
+
+### Interface não detectada
+
+Confira diretamente:
+
+~~~sh
+ip link show
+~~~
+
+E a rota padrão:
+
+~~~sh
+ip route
+~~~
+
+### IP não detectado
+
+Confira:
+
+~~~sh
+ip -4 addr
+~~~
+
+### Gateway não detectado
+
+Confira:
+
+~~~sh
+ip route
+~~~
+
+Procure uma linha iniciada por:
+
+~~~text
+default
+~~~
+
+### DNS não detectado
+
+Confira:
+
+~~~sh
+cat /etc/resolv.conf
+~~~
+
+### `lasc-network` mostra "Offline ou ICMP indisponível"
+
+O teste atual utiliza `ping`.
+
+Confira:
+
+~~~sh
+command -v ping
+ping -c 3 8.8.8.8
+~~~
+
+Falha nesse teste pode significar:
+
+- ausência de conectividade;
+- bloqueio de ICMP;
+- problema de rota;
+- ausência do utilitário `ping`.
+
+Não significa automaticamente que a interface de rede esteja desligada.
 
 ---
 
-## Problemas de Bateria
+## Logs
 
-### ❌ `lasc-battery` mostra "N/A" ou erro
+Para visualizar os logs recentes:
 
-**Causa:** Arquivo de bateria não encontrado (normal em VMs).
+~~~sh
+lasc-log
+~~~
 
-**Solução:**
-```bash
-# Verificar se o dispositivo tem bateria detectada
-ls /sys/class/power_supply/
+O comando utiliza a primeira fonte disponível:
 
-# Em VMs, este comportamento é esperado
-# O comando funciona corretamente em hardware real
-```
+1. `journalctl`;
+2. `dmesg`.
 
----
+### Nenhuma fonte de logs disponível
 
-## Erros Comuns
+Confira:
 
-### ❌ "Permission denied" ao executar scripts
+~~~sh
+command -v journalctl
+command -v dmesg
+~~~
 
-```bash
-# Dar permissão de execução
-chmod +x scripts/install.sh
+Nem todo ambiente Alpine/postmarketOS utiliza `systemd`, portanto a
+ausência de `journalctl` não significa necessariamente um problema no
+LASC OS.
 
-# Para scripts em /usr/local/bin
-sudo chmod +x /usr/local/bin/lasc-*
-```
-
----
-
-### ❌ Caracteres especiais não aparecem corretamente no terminal
-
-**Causa:** Terminal sem suporte a UTF-8.
-
-**Solução:**
-```bash
-# Configurar locale
-export LANG=pt_BR.UTF-8
-export LC_ALL=pt_BR.UTF-8
-
-# Adicionar permanentemente ao .profile
-echo 'export LANG=pt_BR.UTF-8' >> ~/.profile
-```
+Se `dmesg` existir mas não puder ser lido, verifique as permissões do
+ambiente.
 
 ---
 
-### ❌ Espaço em disco insuficiente
+## Espaço em disco
 
-```bash
-# Verificar espaço disponível
-df -h
+O `lasc-doctor` considera uso elevado do disco um problema de diagnóstico.
 
-# Limpar sistema com o comando LASC
+Confira diretamente:
+
+~~~sh
+df -h /
+~~~
+
+Antes de executar qualquer limpeza, faça uma simulação:
+
+~~~sh
+lasc-clean --dry-run
+~~~
+
+Esse modo não altera o sistema.
+
+Se a simulação estiver correta, execute:
+
+~~~sh
 lasc-clean
+~~~
 
-# Limpar cache do APK
-sudo apk cache clean
+A limpeza atual pode tratar:
 
-# Limpar logs antigos
-sudo journalctl --vacuum-time=7d
-```
+- cache de pacotes APK;
+- arquivos temporários `/tmp/lasc-*` e `/tmp/LASC-*`;
+- logs antigos do journal, quando `journalctl` estiver disponível.
+
+A disponibilidade de cada operação depende do sistema.
 
 ---
 
-## Diagnóstico Geral
+## Bibliotecas
 
-O primeiro passo para qualquer problema é executar o diagnóstico integrado:
+Os comandos compartilhados da Foundation utilizam bibliotecas instaladas
+em:
 
-```bash
+~~~text
+/usr/lib/lasc-os/
+~~~
+
+A instalação atual espera:
+
+~~~text
+version.sh
+system.sh
+privilege.sh
+~~~
+
+Confira:
+
+~~~sh
+ls -l /usr/lib/lasc-os/
+~~~
+
+Se uma biblioteca estiver ausente, valide também os comandos:
+
+~~~sh
+ls -l /usr/bin/lasc-*
+~~~
+
+Em uma instalação incompleta, reinstale os componentes a partir da árvore
+de código:
+
+~~~sh
+sudo ./scripts/install.sh
+~~~
+
+Depois execute:
+
+~~~sh
+lasc-version
 lasc-doctor
-```
+~~~
 
-Este comando verifica:
-- Todos os 23 comandos LASC
-- Conectividade de rede
-- Espaço em disco
-- Status dos serviços principais
-- Versão do sistema
+---
+
+## Pacotes APK
+
+O empacotamento da Foundation produz:
+
+~~~text
+lasc-os
+lasc-os-doc
+~~~
+
+O pacote principal contém o runtime e o subpacote `lasc-os-doc` contém
+README e licença.
+
+### Build APK falhou na CI
+
+A definição está em:
+
+~~~text
+packaging/alpine/APKBUILD
+~~~
+
+Execute primeiro os testes locais:
+
+~~~sh
+./tests/test-foundation.sh
+~~~
+
+E valide alterações de whitespace no Git:
+
+~~~sh
+git diff --check
+~~~
+
+O build APK completo é validado em Alpine pela workflow do projeto.
+
+### Artifact da CI
+
+Os APKs publicados pelas execuções da CI são artifacts de validação.
+
+Nesta etapa eles não constituem um repositório público oficial de
+pacotes.
+
+A infraestrutura atual ainda não possui:
+
+- repositório APK público permanente;
+- chave de assinatura permanente destinada à distribuição;
+- canal estável de atualização.
+
+Por isso, não trate um artifact isolado da CI como mecanismo oficial de
+instalação em produção.
+
+---
+
+## Problemas com aplicativos opcionais
+
+O `lasc-doctor` também verifica alguns aplicativos opcionais.
+
+A ausência de um aplicativo opcional é apresentada como aviso, não como
+falha crítica da Foundation.
+
+Para verificar os pacotes disponíveis no sistema, utilize as ferramentas
+do Alpine/postmarketOS apropriadas ao ambiente.
+
+---
+
+## Limitações da Foundation
+
+A Foundation **1.5.0-dev** concentra-se em estrutura, runtime,
+empacotamento, instalação e testes.
+
+Nesta etapa não devem ser considerados recursos concluídos apenas por
+existirem referências históricas no repositório.
+
+Ainda pertencem a etapas posteriores:
+
+- validação em hardware real;
+- suporte oficial a dispositivos específicos;
+- integração com Waydroid;
+- repositório público de pacotes;
+- assinatura permanente de distribuição;
+- atualizações OTA;
+- funcionalidades mobile específicas que não estejam entre os 17
+  comandos atuais.
+
+Comandos históricos como `lasc-wifi`, `lasc-battery`,
+`lasc-brightness`, `lasc-theme`, `lasc-quote` e `lasc-ascii` não fazem
+parte da Foundation atual.
 
 ---
 
 ## Suporte
 
-Se o problema não foi resolvido por este guia:
+Antes de registrar um problema, obtenha:
 
-1. **Abra uma Issue**: [github.com/lalberto1985/lasc-os/issues](https://github.com/lalberto1985/lasc-os/issues)
-2. **Inclua na issue**:
-   - Saída do comando `lasc-doctor`
-   - Mensagem de erro completa
-   - Versão do sistema (`lasc-version`)
-   - Dispositivo/ambiente (VM, PinePhone, etc.)
+~~~sh
+lasc-version
+lasc-doctor
+lasc-network
+~~~
+
+Quando o problema envolver logs:
+
+~~~sh
+lasc-log
+~~~
+
+Ao abrir uma issue, informe:
+
+- mensagem de erro completa;
+- saída relevante do `lasc-doctor`;
+- versão retornada por `lasc-version`;
+- sistema-base e versão;
+- tipo de ambiente utilizado;
+- passos necessários para reproduzir o problema.
+
+Issues do projeto:
+
+https://github.com/lalberto1985/lasc-os/issues
 
 ---
 
-**LASC OS** — *Privacidade, Liberdade, Controle*
+## Documentação relacionada
+
+- [README](../README.md)
+- [Instalação](INSTALLATION.md)
+- [Roadmap](ROADMAP.md)
+- [Changelog](CHANGELOG.md)
+
+---
+
+**LASC OS — Privacidade • Liberdade • Controle**
