@@ -1,0 +1,25 @@
+name: Foundation CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'foundation/**'
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  foundation:
+    name: Foundation validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Foundation tests
+        shell: sh
+        run: ./tests/test-foundation.sh
