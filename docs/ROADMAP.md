@@ -74,9 +74,9 @@ versionada, testável, empacotável e reproduzível.
 - [x] Atualizar guia de instalação
 - [x] Atualizar troubleshooting
 - [x] Remover backups históricos do estado atual do repositório
-- [ ] Atualizar changelog para 1.5.0
-- [ ] Atualizar guia de contribuição
-- [ ] Concluir documentação da Foundation
+- [x] Atualizar changelog para 1.5.0
+- [x] Atualizar guia de contribuição
+- [x] Concluir documentação da Foundation
 
 ### Critério de conclusão
 
