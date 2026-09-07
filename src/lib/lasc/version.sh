@@ -22,3 +22,32 @@ lasc_detect_version() {
 
     printf '%s\n' "unknown"
 }
+
+lasc_version_codename() {
+    version=$1
+
+    case "$version" in
+        1.0.0)
+            printf '%s\n' "Genesis"
+            ;;
+        *)
+            printf '%s\n' "não definido"
+            ;;
+    esac
+}
+
+lasc_version_status() {
+    version=$1
+
+    case "$version" in
+        *-dev)
+            printf '%s\n' "desenvolvimento"
+            ;;
+        unknown)
+            printf '%s\n' "desconhecido"
+            ;;
+        *)
+            printf '%s\n' "estável"
+            ;;
+    esac
+}

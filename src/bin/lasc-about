@@ -14,6 +14,7 @@ else
 fi
 
 LASC_VERSION=$(lasc_detect_version)
+LASC_CODENAME=$(lasc_version_codename "$LASC_VERSION")
 LASC_BASE=$(lasc_detect_base)
 LASC_KERNEL=$(lasc_kernel)
 LASC_ARCH=$(uname -m 2>/dev/null || printf '%s\n' "unknown")
@@ -33,7 +34,7 @@ printf '\033[1;36m        Sistema Operacional Mobile v%s\033[0m\n' "$LASC_VERSIO
 printf '\033[1;35m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m\n\n'
 
 printf '\033[1;33mVersão:\033[0m           %s v%s\n' "$LASC_PRODUCT_NAME" "$LASC_VERSION"
-printf '\033[1;33mCodinome:\033[0m         Genesis\n'
+printf '\033[1;33mCodinome:\033[0m         %s\n' "$LASC_CODENAME"
 printf '\033[1;33mBase:\033[0m             %s\n' "$LASC_BASE"
 printf '\033[1;33mKernel:\033[0m           %s\n' "$LASC_KERNEL"
 printf '\033[1;33mArquitetura:\033[0m      %s\n' "$LASC_ARCH"

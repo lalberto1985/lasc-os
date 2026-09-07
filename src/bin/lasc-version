@@ -1,0 +1,151 @@
+#!/bin/sh
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" 2>/dev/null && pwd)
+
+if [ -r /usr/lib/lasc-os/version.sh ]; then
+    . /usr/lib/lasc-os/version.sh
+elif [ -r "$SCRIPT_DIR/../lib/lasc/version.sh" ]; then
+    . "$SCRIPT_DIR/../lib/lasc/version.sh"
+else
+    printf '%s\n' "Erro: biblioteca de versão do LASC OS não encontrada." >&2
+    exit 1
+fi
+
+lasc_version_usage() {
+    printf 'Uso: lasc-version [opções]\n\n'
+    printf 'Opções:\n'
+    printf '  -h, --help    Mostra esta ajuda\n'
+}
+
+lasc_find_changelog() {
+    if [ -r /usr/share/doc/lasc-os/CHANGELOG.md ]; then
+        printf '%s\n' "/usr/share/doc/lasc-os/CHANGELOG.md"
+        return 0
+    fi
+
+    if [ -r "$SCRIPT_DIR/../../docs/CHANGELOG.md" ]; then
+        printf '%s\n' "$SCRIPT_DIR/../../docs/CHANGELOG.md"
+        return 0
+    fi
+
+    return 1
+}
+
+lasc_latest_changelog_entry() {
+    grep -m 1 '^## \[' "$1" 2>/dev/null
+}
+
+lasc_latest_changelog_title() {
+    awk '
+        /^## \[/ {
+            if (release_seen) {
+                exit
+            }
+
+            release_seen = 1
+            next
+        }
+
+        release_seen && /^### / {
+            sub(/^### /, "")
+            print
+            exit
+        }
+    ' "$1"
+}
+
+lasc_latest_changelog_highlights() {
+    awk '
+        /^## \[/ {
+            if (release_seen) {
+                exit
+            }
+
+            release_seen = 1
+            next
+        }
+
+        release_seen && /^- / {
+            print "   " $0
+            count++
+
+            if (count >= 3) {
+                exit
+            }
+        }
+    ' "$1"
+}
+
+case "${1:-}" in
+    '')
+        ;;
+    -h|--help)
+        lasc_version_usage
+        exit 0
+        ;;
+    *)
+        printf 'Erro: opção desconhecida: %s\n\n' "$1" >&2
+        lasc_version_usage >&2
+        exit 2
+        ;;
+esac
+
+VERSION=$(lasc_detect_version)
+STATUS=$(lasc_version_status "$VERSION")
+CODENAME=$(lasc_version_codename "$VERSION")
+
+printf '\033[1;36m╔═══════════════════════════════════════╗\033[0m\n'
+printf '\033[1;36m║        \033[1;32mLASC OS - Versão\033[1;36m               ║\033[0m\n'
+printf '\033[1;36m╚═══════════════════════════════════════╝\033[0m\n\n'
+
+printf '\033[1;33mProduto:\033[0m    %s\n' "$LASC_PRODUCT_NAME"
+printf '\033[1;33mVersão:\033[0m     %s\n' "$VERSION"
+printf '\033[1;33mEstado:\033[0m     %s\n' "$STATUS"
+printf '\033[1;33mCodinome:\033[0m   %s\n' "$CODENAME"
+
+printf '\n\033[1;35mNovidades\033[0m\n'
+
+if CHANGELOG=$(lasc_find_changelog); then
+    BASE_VERSION=${VERSION%%-*}
+
+    if grep -q "^## \[$BASE_VERSION\]" "$CHANGELOG" 2>/dev/null; then
+        printf 'A versão %s possui uma entrada documentada no changelog.\n' \
+            "$BASE_VERSION"
+    else
+        printf 'A versão %s ainda não possui uma entrada no changelog.\n' \
+            "$VERSION"
+    fi
+
+    LATEST_ENTRY=$(lasc_latest_changelog_entry "$CHANGELOG")
+
+    if [ -n "$LATEST_ENTRY" ]; then
+        LATEST_VERSION=$(printf '%s\n' "$LATEST_ENTRY" |
+            sed -n 's/^## \[\([^]]*\)\].*/\1/p')
+
+        LATEST_DATE=$(printf '%s\n' "$LATEST_ENTRY" |
+            sed -n 's/^## \[[^]]*\] - \(.*\)$/\1/p')
+
+        LATEST_TITLE=$(lasc_latest_changelog_title "$CHANGELOG")
+
+        printf '\nÚltima versão documentada: %s' "$LATEST_VERSION"
+
+        if [ -n "$LATEST_DATE" ]; then
+            printf ' (%s)' "$LATEST_DATE"
+        fi
+
+        printf '\n'
+
+        if [ -n "$LATEST_TITLE" ]; then
+            printf 'Marco: %s\n' "$LATEST_TITLE"
+        fi
+
+        printf '\nDestaques:\n'
+        lasc_latest_changelog_highlights "$CHANGELOG"
+    fi
+
+    printf '\nChangelog: %s\n' "$CHANGELOG"
+else
+    printf 'Changelog não encontrado nesta instalação.\n'
+fi
+
+printf '\n'
